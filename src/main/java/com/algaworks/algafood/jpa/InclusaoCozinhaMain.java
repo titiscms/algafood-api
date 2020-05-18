@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.repository.CozinhaRepository;
 
 public class InclusaoCozinhaMain {
 	
@@ -16,10 +17,10 @@ public class InclusaoCozinhaMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 		
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
 		// lista todas as cozinhas do banco de dados
-		List<Cozinha> cozinhasAntes = cadastroCozinha.listar();
+		List<Cozinha> cozinhasAntes = cozinhaRepository.listar();
 		cozinhasAntes.forEach(cozinha -> System.out.println("ID: " + cozinha.getId() + " - Nome: " + cozinha.getNome()));
 
 		Cozinha cozinha1 = new Cozinha();
@@ -28,13 +29,13 @@ public class InclusaoCozinhaMain {
 		cozinha2.setNome("Japonesa");
 		
 		// incluindo as cozinhas no banco de dados
-		cozinha1 = cadastroCozinha.salvar(cozinha1);
+		cozinha1 = cozinhaRepository.salvar(cozinha1);
 		System.out.printf("%d - %s\n" , cozinha1.getId(), cozinha1.getNome());
-		cozinha2 = cadastroCozinha.salvar(cozinha2);
+		cozinha2 = cozinhaRepository.salvar(cozinha2);
 		System.out.printf("%d - %s\n" , cozinha2.getId(), cozinha2.getNome());
 		
 		// lista todas as cozinhas do banco de dados		
-		List<Cozinha> cozinhasDepois = cadastroCozinha.listar();
+		List<Cozinha> cozinhasDepois = cozinhaRepository.listar();
 		cozinhasDepois.forEach(cozinha -> System.out.println("ID: " + cozinha.getId() + " - Nome: " + cozinha.getNome()));
 	}
 }
