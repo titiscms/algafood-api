@@ -23,7 +23,7 @@ public class CrudRestauranteMain {
 		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		// Listar todos os restaurante do banco de dados inicial
+		// Listar todos os restaurantes do banco de dados inicial
 		List<Restaurante> restaurantesAntes = restauranteRepository.listar();
 		restaurantesAntes.forEach(restaurante -> {
 			System.out.println("ID: " + restaurante.getId() + " - Nome: " + restaurante.getNome() + 
@@ -39,44 +39,41 @@ public class CrudRestauranteMain {
 		
 		restauranteRepository.salvar(restaurante1);
 		
-		// Listar todos os restaurante do banco de dados depois da inclusão
+		// Listar todos os restaurantes do banco de dados depois da inclusão
 		List<Restaurante> restaurantesDepois = restauranteRepository.listar();
 		restaurantesDepois.forEach(restaurante -> {
 			System.out.println("ID: " + restaurante.getId() + " - Nome: " + restaurante.getNome() + 
 					" - Taxa Frete: " + restaurante.getTaxaFrete() + " - Nome da cozinha: " + restaurante.getCozinha().getNome());
 		});
 		
-		// Buscar restaurate com ID = 2
+		// Buscar restaurante com ID = 2
 		Restaurante restauranteBuscado= restauranteRepository.buscar(2L);
 		System.out.println("ID: " + restauranteBuscado.getId() + " - Nome: " + restauranteBuscado.getNome() + 
 				" - Taxa Frete: " + restauranteBuscado.getTaxaFrete() + " - Nome da cozinha: " + restauranteBuscado.getCozinha().getNome());
 		
 		Restaurante restaurante2 = new Restaurante();
-		restaurante2.setId(2L);
+		restaurante2.setId(restauranteBuscado.getId());
 		restaurante2.setNome("Piero");
 		restaurante2.setTaxaFrete(new BigDecimal(20));
-		Cozinha cozinha2 = cozinhaRepository.buscar(2L);
+		Cozinha cozinha2 = cozinhaRepository.buscar(restauranteBuscado.getCozinha().getId());
 		restaurante2.setCozinha(cozinha2);
 		
 		// atualizar restaurante com ID = 2
 		Restaurante restauranteAlterado = restauranteRepository.salvar(restaurante2);
 		System.out.println("ID: " + restauranteAlterado.getId() + " - Nome: " + restauranteAlterado.getNome() + 
 				" - Taxa Frete: " + restauranteAlterado.getTaxaFrete() + " - Nome da cozinha: " + restauranteAlterado.getCozinha().getNome());
-		
-		
+
 		// Excluir restaurante com ID = 1
 		Restaurante restauranteDeletado = new Restaurante();
 		restauranteDeletado.setId(1L);
 		
 		restauranteRepository.remover(restauranteDeletado);
 		
-		
-		// Listar todos os restaurante do banco de dados
+		// Listar todos os restaurantes do banco de dados
 		List<Restaurante> restaurantes = restauranteRepository.listar();
 		restaurantes.forEach(restaurante -> {
 			System.out.println("ID: " + restaurante.getId() + " - Nome: " + restaurante.getNome() + 
 					" - Taxa Frete: " + restaurante.getTaxaFrete() + " - Nome da cozinha: " + restaurante.getCozinha().getNome());
 		});
 	}
-
 }
