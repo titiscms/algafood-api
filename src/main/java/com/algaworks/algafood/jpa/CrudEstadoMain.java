@@ -57,7 +57,7 @@ public class CrudEstadoMain {
 		Estado estadoDeletado = new Estado();
 		estadoDeletado.setId(5L);
 		
-		estadoRepository.remover(estadoDeletado);
+		estadoRepository.remover(estadoDeletado.getId());
 		
 		// Listar todos os estado do banco de dados
 		List<Estado> estados = estadoRepository.listar();
