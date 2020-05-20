@@ -57,7 +57,7 @@ public class CrudCozinhaMain {
 		Cozinha cozinhaDeletado = new Cozinha();
 		cozinhaDeletado.setId(4L);
 		
-		cozinhaRepository.remover(cozinhaDeletado);
+		cozinhaRepository.remover(cozinhaDeletado.getId());
 		
 		// Listar todos os cozinhas do banco de dados
 		List<Cozinha> cozinhas = cozinhaRepository.listar();
