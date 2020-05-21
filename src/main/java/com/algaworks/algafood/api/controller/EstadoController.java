@@ -38,8 +38,14 @@ public class EstadoController {
 	}
 	
 	@GetMapping("/{id}")
-	public Estado buscar(@PathVariable Long id) {
-		return estadoRepository.buscar(id);
+	public ResponseEntity<Estado> buscar(@PathVariable Long id) {
+		Estado estado = estadoRepository.buscar(id);
+		
+		if (estado != null) {
+			return ResponseEntity.ok(estado);
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping

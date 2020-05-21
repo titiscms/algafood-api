@@ -67,7 +67,7 @@ public class CrudRestauranteMain {
 		Restaurante restauranteDeletado = new Restaurante();
 		restauranteDeletado.setId(1L);
 		
-		restauranteRepository.remover(restauranteDeletado);
+		restauranteRepository.remover(restauranteDeletado.getId());
 		
 		// Listar todos os restaurantes do banco de dados
 		List<Restaurante> restaurantes = restauranteRepository.listar();

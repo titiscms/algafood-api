@@ -68,7 +68,7 @@ public class CrudCidadeMain {
 		Cidade cidadeDeletado = new Cidade();
 		cidadeDeletado.setId(7L);
 		
-		cidadeRepository.remover(cidadeDeletado);
+		cidadeRepository.remover(cidadeDeletado.getId());
 		
 		// Listar todas as cidade do banco de dados
 		List<Cidade> cidades = cidadeRepository.listar();
