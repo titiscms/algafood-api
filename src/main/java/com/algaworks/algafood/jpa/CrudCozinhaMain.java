@@ -20,7 +20,7 @@ public class CrudCozinhaMain {
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
 		// Listar todas as cozinhas do banco de dados inicial
-		List<Cozinha> cozinhasAntes = cozinhaRepository.listar();
+		List<Cozinha> cozinhasAntes = cozinhaRepository.findAll();
 		cozinhasAntes.forEach(cozinha -> {
 			System.out.println("ID: " + cozinha.getId() + " - Nome: " + cozinha.getNome());
 		});
@@ -32,17 +32,17 @@ public class CrudCozinhaMain {
 		Cozinha cozinha2 = new Cozinha();
 		cozinha2.setNome("Brasileira");
 		
-		cozinhaRepository.salvar(cozinha1);
-		cozinhaRepository.salvar(cozinha2);
+		cozinhaRepository.save(cozinha1);
+		cozinhaRepository.save(cozinha2);
 		
 		// Listar todas as cozinhas do banco de dados depois da inclusão
-		List<Cozinha> cozinhasDepois = cozinhaRepository.listar();
+		List<Cozinha> cozinhasDepois = cozinhaRepository.findAll();
 		cozinhasDepois.forEach(cozinha -> {
 			System.out.println("ID: " + cozinha.getId() + " - Nome: " + cozinha.getNome());
 		});
 		
 		// Buscar cozinha com ID = 3
-		Cozinha cozinhaBuscado= cozinhaRepository.buscar(3L);
+		Cozinha cozinhaBuscado= cozinhaRepository.getOne(3L);
 		System.out.println("ID: " + cozinhaBuscado.getId() + " - Nome: " + cozinhaBuscado.getNome());
 		
 		Cozinha cozinha3 = new Cozinha();
@@ -50,17 +50,17 @@ public class CrudCozinhaMain {
 		cozinha3.setNome("Russa");
 		
 		// atualizar cozinha com ID = 3
-		Cozinha cozinhaAlterado = cozinhaRepository.salvar(cozinha3);
+		Cozinha cozinhaAlterado = cozinhaRepository.save(cozinha3);
 		System.out.println("ID: " + cozinhaAlterado.getId() + " - Nome: " + cozinhaAlterado.getNome());
 		
 		// Excluir cozinha com ID = 4
 		Cozinha cozinhaDeletado = new Cozinha();
 		cozinhaDeletado.setId(4L);
 		
-		cozinhaRepository.remover(cozinhaDeletado.getId());
+		cozinhaRepository.deleteById(cozinhaDeletado.getId());
 		
 		// Listar todos os cozinhas do banco de dados
-		List<Cozinha> cozinhas = cozinhaRepository.listar();
+		List<Cozinha> cozinhas = cozinhaRepository.findAll();
 		cozinhas.forEach(cozinha -> {
 			System.out.println("ID: " + cozinha.getId() + " - Nome: " + cozinha.getNome());
 		});

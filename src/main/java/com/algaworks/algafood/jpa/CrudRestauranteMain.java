@@ -34,7 +34,7 @@ public class CrudRestauranteMain {
 		Restaurante restaurante1 = new Restaurante();
 		restaurante1.setNome("Coco Bambu");
 		restaurante1.setTaxaFrete(new BigDecimal(15.5));
-		Cozinha cozinha1 = cozinhaRepository.buscar(2L);
+		Cozinha cozinha1 = cozinhaRepository.getOne(2L);
 		restaurante1.setCozinha(cozinha1);
 		
 		restauranteRepository.salvar(restaurante1);
@@ -55,7 +55,7 @@ public class CrudRestauranteMain {
 		restaurante2.setId(restauranteBuscado.getId());
 		restaurante2.setNome("Piero");
 		restaurante2.setTaxaFrete(new BigDecimal(20));
-		Cozinha cozinha2 = cozinhaRepository.buscar(restauranteBuscado.getCozinha().getId());
+		Cozinha cozinha2 = cozinhaRepository.getOne(restauranteBuscado.getCozinha().getId());
 		restaurante2.setCozinha(cozinha2);
 		
 		// atualizar restaurante com ID = 2
