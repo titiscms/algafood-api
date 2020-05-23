@@ -23,7 +23,7 @@ public class CrudCidadeMain {
 		EstadoRepository estadoRepository = applicationContext.getBean(EstadoRepository.class);
 
 		// Listar todas as cidade do banco de dados inicial
-		List<Cidade> cidadesAntes = cidadeRepository.listar();
+		List<Cidade> cidadesAntes = cidadeRepository.findAll();
 		cidadesAntes.forEach(cidade -> {
 			System.out.println("ID: " + cidade.getId() + " - Nome: " + cidade.getNome() + " - Estado: " + cidade.getEstado().getNome());
 		});
@@ -31,36 +31,36 @@ public class CrudCidadeMain {
 		// Salvando 2 cidades
 		Cidade cidade1 = new Cidade();
 		cidade1.setNome("Campos do Jordão");
-		Estado estado1 = estadoRepository.buscar(2L);
+		Estado estado1 = estadoRepository.getOne(2L);
 		cidade1.setEstado(estado1);
 		
 		Cidade cidade2 = new Cidade();
 		cidade2.setNome("Taboão da Serra");
-		Estado estado2 = estadoRepository.buscar(2L);
+		Estado estado2 = estadoRepository.getOne(2L);
 		cidade2.setEstado(estado2);
 		
-		cidadeRepository.salvar(cidade1);
-		cidadeRepository.salvar(cidade2);
+		cidadeRepository.save(cidade1);
+		cidadeRepository.save(cidade2);
 		
 		// Listar todas as cidades do banco de dados depois da inclusão
-		List<Cidade> cidadesDepois = cidadeRepository.listar();
+		List<Cidade> cidadesDepois = cidadeRepository.findAll();
 		cidadesDepois.forEach(cidade -> {
 			System.out.println("ID: " + cidade.getId() + " - Nome: " + cidade.getNome() + " - Estado: " + cidade.getEstado().getNome());
 		});
 		
 		// Buscar cidade com ID = 6
-		Cidade cidadeBuscado = cidadeRepository.buscar(6L);
+		Cidade cidadeBuscado = cidadeRepository.getOne(6L);
 		System.out.println("ID: " + cidadeBuscado.getId() + " - Nome: " + cidadeBuscado.getNome() + 
 				" - Estado: " + cidadeBuscado.getEstado().getNome());
 		
 		Cidade cidade3 = new Cidade();
 		cidade3.setId(cidadeBuscado.getId());
 		cidade3.setNome("Atibaia");
-		Estado estado3 = estadoRepository.buscar(cidadeBuscado.getEstado().getId());
+		Estado estado3 = estadoRepository.getOne(cidadeBuscado.getEstado().getId());
 		cidade3.setEstado(estado3);
 		
 		// atualizar cidade com ID = 6
-		Cidade cidadeAlterado = cidadeRepository.salvar(cidade3);
+		Cidade cidadeAlterado = cidadeRepository.save(cidade3);
 		System.out.println("ID: " + cidadeAlterado.getId() + " - Nome: " + cidadeAlterado.getNome() + 
 				" - Estado: " + cidadeAlterado.getEstado().getNome());
 		
@@ -68,10 +68,10 @@ public class CrudCidadeMain {
 		Cidade cidadeDeletado = new Cidade();
 		cidadeDeletado.setId(7L);
 		
-		cidadeRepository.remover(cidadeDeletado.getId());
+		cidadeRepository.deleteById(cidadeDeletado.getId());
 		
 		// Listar todas as cidade do banco de dados
-		List<Cidade> cidades = cidadeRepository.listar();
+		List<Cidade> cidades = cidadeRepository.findAll();
 		cidades.forEach(cidade -> {
 			System.out.println("ID: " + cidade.getId() + " - Nome: " + cidade.getNome() + " - Estado: " + cidade.getEstado().getNome());
 		});

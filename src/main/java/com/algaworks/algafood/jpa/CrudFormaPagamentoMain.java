@@ -20,7 +20,7 @@ public class CrudFormaPagamentoMain {
 		FormaPagamentoRepository formaPagamentoRepository = applicationContext.getBean(FormaPagamentoRepository.class);
 
 		// Listar todos os formaPagamento do banco de dados inicial
-		List<FormaPagamento> formaPagamentosAntes = formaPagamentoRepository.listar();
+		List<FormaPagamento> formaPagamentosAntes = formaPagamentoRepository.findAll();
 		formaPagamentosAntes.forEach(formaPagamento -> {
 			System.out.println("ID: " + formaPagamento.getId() + " - Nome: " + formaPagamento.getDescricao());
 		});
@@ -32,17 +32,17 @@ public class CrudFormaPagamentoMain {
 		FormaPagamento formaPagamento2 = new FormaPagamento();
 		formaPagamento2.setDescricao("Cheque Pré-datado");
 		
-		formaPagamentoRepository.salvar(formaPagamento1);
-		formaPagamentoRepository.salvar(formaPagamento2);
+		formaPagamentoRepository.save(formaPagamento1);
+		formaPagamentoRepository.save(formaPagamento2);
 		
 		// Listar todos os formaPagamento do banco de dados depois da inclusão
-		List<FormaPagamento> formaPagamentosDepois = formaPagamentoRepository.listar();
+		List<FormaPagamento> formaPagamentosDepois = formaPagamentoRepository.findAll();
 		formaPagamentosDepois.forEach(formaPagamento -> {
 			System.out.println("ID: " + formaPagamento.getId() + " - Nome: " + formaPagamento.getDescricao());
 		});
 		
 		// Buscar restaurate com ID = 4
-		FormaPagamento formaPagamentoBuscado= formaPagamentoRepository.buscar(4L);
+		FormaPagamento formaPagamentoBuscado= formaPagamentoRepository.getOne(4L);
 		System.out.println("ID: " + formaPagamentoBuscado.getId() + " - Nome: " + formaPagamentoBuscado.getDescricao());
 		
 		FormaPagamento formaPagamento3 = new FormaPagamento();
@@ -50,7 +50,7 @@ public class CrudFormaPagamentoMain {
 		formaPagamento3.setDescricao("Promissória");
 		
 		// atualizar formaPagamento com ID = 4
-		FormaPagamento formaPagamentoAlterado = formaPagamentoRepository.salvar(formaPagamento3);
+		FormaPagamento formaPagamentoAlterado = formaPagamentoRepository.save(formaPagamento3);
 		System.out.println("ID: " + formaPagamentoAlterado.getId() + " - Nome: " + formaPagamentoAlterado.getDescricao());
 		
 		
@@ -58,11 +58,11 @@ public class CrudFormaPagamentoMain {
 		FormaPagamento formaPagamentoDeletado = new FormaPagamento();
 		formaPagamentoDeletado.setId(5L);
 		
-		formaPagamentoRepository.remover(formaPagamentoDeletado);
+		formaPagamentoRepository.deleteById(formaPagamentoDeletado.getId());
 		
 		
 		// Listar todos os formaPagamento do banco de dados
-		List<FormaPagamento> formaPagamentos = formaPagamentoRepository.listar();
+		List<FormaPagamento> formaPagamentos = formaPagamentoRepository.findAll();
 		formaPagamentos.forEach(formaPagamento -> {
 			System.out.println("ID: " + formaPagamento.getId() + " - Nome: " + formaPagamento.getDescricao());
 		});

@@ -20,7 +20,7 @@ public class CrudPermissaoMain {
 		PermissaoRepository permissaoRepository = applicationContext.getBean(PermissaoRepository.class);
 
 		// Listar todas as permissões do banco de dados inicial
-		List<Permissao> permissaosAntes = permissaoRepository.listar();
+		List<Permissao> permissaosAntes = permissaoRepository.findAll();
 		permissaosAntes.forEach(permissao -> {
 			System.out.println("ID: " + permissao.getId() + " - Nome: " + permissao.getNome() + 
 					" - Descrição: " + permissao.getDescricao());
@@ -35,18 +35,18 @@ public class CrudPermissaoMain {
 		permissao2.setNome("DELETAR_RESTAURANTES");
 		permissao2.setDescricao("Permite deletar restaurantes");
 		
-		permissaoRepository.salvar(permissao1);
-		permissaoRepository.salvar(permissao2);
+		permissaoRepository.save(permissao1);
+		permissaoRepository.save(permissao2);
 		
 		// Listar todas as permissões do banco de dados depois da inclusão
-		List<Permissao> permissaosDepois = permissaoRepository.listar();
+		List<Permissao> permissaosDepois = permissaoRepository.findAll();
 		permissaosDepois.forEach(permissao -> {
 			System.out.println("ID: " + permissao.getId() + " - Nome: " + permissao.getNome() + 
 					" - Descrição: " + permissao.getDescricao());
 		});
 		
 		// Buscar permissao com ID = 3
-		Permissao permissaoBuscado = permissaoRepository.buscar(3L);
+		Permissao permissaoBuscado = permissaoRepository.getOne(3L);
 		System.out.println("ID: " + permissaoBuscado.getId() + " - Nome: " + permissaoBuscado.getNome() + 
 				" - Descrição: " + permissaoBuscado.getDescricao());
 		
@@ -56,7 +56,7 @@ public class CrudPermissaoMain {
 		permissao3.setDescricao("Permite editar restaurantes");
 		
 		// atualizar permissao com ID = 3
-		Permissao permissaoAlterado = permissaoRepository.salvar(permissao3);
+		Permissao permissaoAlterado = permissaoRepository.save(permissao3);
 		System.out.println("ID: " + permissaoAlterado.getId() + " - Nome: " + permissaoAlterado.getNome() + 
 				" - Descrição: " + permissaoAlterado.getDescricao());
 		
@@ -64,10 +64,10 @@ public class CrudPermissaoMain {
 		Permissao permissaoDeletado = new Permissao();
 		permissaoDeletado.setId(4L);
 		
-		permissaoRepository.remover(permissaoDeletado);
+		permissaoRepository.deleteById(permissaoDeletado.getId());
 		
 		// Listar todas as permissões do banco de dados
-		List<Permissao> permissaos = permissaoRepository.listar();
+		List<Permissao> permissaos = permissaoRepository.findAll();
 		permissaos.forEach(permissao -> {
 			System.out.println("ID: " + permissao.getId() + " - Nome: " + permissao.getNome() + 
 					" - Descrição: " + permissao.getDescricao());

@@ -24,7 +24,7 @@ public class CrudRestauranteMain {
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
 		// Listar todos os restaurantes do banco de dados inicial
-		List<Restaurante> restaurantesAntes = restauranteRepository.listar();
+		List<Restaurante> restaurantesAntes = restauranteRepository.findAll();
 		restaurantesAntes.forEach(restaurante -> {
 			System.out.println("ID: " + restaurante.getId() + " - Nome: " + restaurante.getNome() + 
 					" - Taxa Frete: " + restaurante.getTaxaFrete() + " - Nome da cozinha: " + restaurante.getCozinha().getNome());
@@ -37,17 +37,17 @@ public class CrudRestauranteMain {
 		Cozinha cozinha1 = cozinhaRepository.getOne(2L);
 		restaurante1.setCozinha(cozinha1);
 		
-		restauranteRepository.salvar(restaurante1);
+		restauranteRepository.save(restaurante1);
 		
 		// Listar todos os restaurantes do banco de dados depois da inclusão
-		List<Restaurante> restaurantesDepois = restauranteRepository.listar();
+		List<Restaurante> restaurantesDepois = restauranteRepository.findAll();
 		restaurantesDepois.forEach(restaurante -> {
 			System.out.println("ID: " + restaurante.getId() + " - Nome: " + restaurante.getNome() + 
 					" - Taxa Frete: " + restaurante.getTaxaFrete() + " - Nome da cozinha: " + restaurante.getCozinha().getNome());
 		});
 		
 		// Buscar restaurante com ID = 2
-		Restaurante restauranteBuscado= restauranteRepository.buscar(2L);
+		Restaurante restauranteBuscado= restauranteRepository.getOne(2L);
 		System.out.println("ID: " + restauranteBuscado.getId() + " - Nome: " + restauranteBuscado.getNome() + 
 				" - Taxa Frete: " + restauranteBuscado.getTaxaFrete() + " - Nome da cozinha: " + restauranteBuscado.getCozinha().getNome());
 		
@@ -59,7 +59,7 @@ public class CrudRestauranteMain {
 		restaurante2.setCozinha(cozinha2);
 		
 		// atualizar restaurante com ID = 2
-		Restaurante restauranteAlterado = restauranteRepository.salvar(restaurante2);
+		Restaurante restauranteAlterado = restauranteRepository.save(restaurante2);
 		System.out.println("ID: " + restauranteAlterado.getId() + " - Nome: " + restauranteAlterado.getNome() + 
 				" - Taxa Frete: " + restauranteAlterado.getTaxaFrete() + " - Nome da cozinha: " + restauranteAlterado.getCozinha().getNome());
 
@@ -67,10 +67,10 @@ public class CrudRestauranteMain {
 		Restaurante restauranteDeletado = new Restaurante();
 		restauranteDeletado.setId(1L);
 		
-		restauranteRepository.remover(restauranteDeletado.getId());
+		restauranteRepository.deleteById(restauranteDeletado.getId());
 		
 		// Listar todos os restaurantes do banco de dados
-		List<Restaurante> restaurantes = restauranteRepository.listar();
+		List<Restaurante> restaurantes = restauranteRepository.findAll();
 		restaurantes.forEach(restaurante -> {
 			System.out.println("ID: " + restaurante.getId() + " - Nome: " + restaurante.getNome() + 
 					" - Taxa Frete: " + restaurante.getTaxaFrete() + " - Nome da cozinha: " + restaurante.getCozinha().getNome());
