@@ -1,6 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -42,11 +43,11 @@ public class CrudEstadoMain {
 		});
 		
 		// Buscar restaurate com ID = 4
-		Estado estadoBuscado= estadoRepository.getOne(4L);
-		System.out.println("ID: " + estadoBuscado.getId() + " - Nome: " + estadoBuscado.getNome());
+		Optional<Estado> estadoBuscado= estadoRepository.findById(4L);
+		System.out.println("ID: " + estadoBuscado.get().getId() + " - Nome: " + estadoBuscado.get().getNome());
 		
 		Estado estado3 = new Estado();
-		estado3.setId(estadoBuscado.getId());
+		estado3.setId(estadoBuscado.get().getId());
 		estado3.setNome("Santa Catarina");
 		
 		// atualizar estado com ID = 4

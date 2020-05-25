@@ -1,6 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -49,14 +50,14 @@ public class CrudCidadeMain {
 		});
 		
 		// Buscar cidade com ID = 6
-		Cidade cidadeBuscado = cidadeRepository.getOne(6L);
-		System.out.println("ID: " + cidadeBuscado.getId() + " - Nome: " + cidadeBuscado.getNome() + 
-				" - Estado: " + cidadeBuscado.getEstado().getNome());
+		Optional<Cidade> cidadeBuscado = cidadeRepository.findById(6L);
+		System.out.println("ID: " + cidadeBuscado.get().getId() + " - Nome: " + cidadeBuscado.get().getNome() + 
+				" - Estado: " + cidadeBuscado.get().getEstado().getNome());
 		
 		Cidade cidade3 = new Cidade();
-		cidade3.setId(cidadeBuscado.getId());
+		cidade3.setId(cidadeBuscado.get().getId());
 		cidade3.setNome("Atibaia");
-		Estado estado3 = estadoRepository.getOne(cidadeBuscado.getEstado().getId());
+		Estado estado3 = estadoRepository.getOne(cidadeBuscado.get().getEstado().getId());
 		cidade3.setEstado(estado3);
 		
 		// atualizar cidade com ID = 6

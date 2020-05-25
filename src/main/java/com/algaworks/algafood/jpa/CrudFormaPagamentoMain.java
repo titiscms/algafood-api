@@ -1,6 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -42,11 +43,11 @@ public class CrudFormaPagamentoMain {
 		});
 		
 		// Buscar restaurate com ID = 4
-		FormaPagamento formaPagamentoBuscado= formaPagamentoRepository.getOne(4L);
-		System.out.println("ID: " + formaPagamentoBuscado.getId() + " - Nome: " + formaPagamentoBuscado.getDescricao());
+		Optional<FormaPagamento> formaPagamentoBuscado= formaPagamentoRepository.findById(4L);
+		System.out.println("ID: " + formaPagamentoBuscado.get().getId() + " - Nome: " + formaPagamentoBuscado.get().getDescricao());
 		
 		FormaPagamento formaPagamento3 = new FormaPagamento();
-		formaPagamento3.setId(formaPagamentoBuscado.getId());
+		formaPagamento3.setId(formaPagamentoBuscado.get().getId());
 		formaPagamento3.setDescricao("Promissória");
 		
 		// atualizar formaPagamento com ID = 4

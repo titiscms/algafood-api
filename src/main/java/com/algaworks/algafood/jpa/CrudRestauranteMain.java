@@ -2,6 +2,7 @@ package com.algaworks.algafood.jpa;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -47,15 +48,15 @@ public class CrudRestauranteMain {
 		});
 		
 		// Buscar restaurante com ID = 2
-		Restaurante restauranteBuscado= restauranteRepository.getOne(2L);
-		System.out.println("ID: " + restauranteBuscado.getId() + " - Nome: " + restauranteBuscado.getNome() + 
-				" - Taxa Frete: " + restauranteBuscado.getTaxaFrete() + " - Nome da cozinha: " + restauranteBuscado.getCozinha().getNome());
+		Optional<Restaurante> restauranteBuscado= restauranteRepository.findById(2L);
+		System.out.println("ID: " + restauranteBuscado.get().getId() + " - Nome: " + restauranteBuscado.get().getNome() + 
+				" - Taxa Frete: " + restauranteBuscado.get().getTaxaFrete() + " - Nome da cozinha: " + restauranteBuscado.get().getCozinha().getNome());
 		
 		Restaurante restaurante2 = new Restaurante();
-		restaurante2.setId(restauranteBuscado.getId());
+		restaurante2.setId(restauranteBuscado.get().getId());
 		restaurante2.setNome("Piero");
 		restaurante2.setTaxaFrete(new BigDecimal(20));
-		Cozinha cozinha2 = cozinhaRepository.getOne(restauranteBuscado.getCozinha().getId());
+		Cozinha cozinha2 = cozinhaRepository.getOne(restauranteBuscado.get().getCozinha().getId());
 		restaurante2.setCozinha(cozinha2);
 		
 		// atualizar restaurante com ID = 2

@@ -1,6 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -46,12 +47,12 @@ public class CrudPermissaoMain {
 		});
 		
 		// Buscar permissao com ID = 3
-		Permissao permissaoBuscado = permissaoRepository.getOne(3L);
-		System.out.println("ID: " + permissaoBuscado.getId() + " - Nome: " + permissaoBuscado.getNome() + 
-				" - Descrição: " + permissaoBuscado.getDescricao());
+		Optional<Permissao> permissaoBuscado = permissaoRepository.findById(3L);
+		System.out.println("ID: " + permissaoBuscado.get().getId() + " - Nome: " + permissaoBuscado.get().getNome() + 
+				" - Descrição: " + permissaoBuscado.get().getDescricao());
 		
 		Permissao permissao3 = new Permissao();
-		permissao3.setId(permissaoBuscado.getId());
+		permissao3.setId(permissaoBuscado.get().getId());
 		permissao3.setNome("EDITAR_RESTAURANTES");
 		permissao3.setDescricao("Permite editar restaurantes");
 		

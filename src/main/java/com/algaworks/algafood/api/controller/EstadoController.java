@@ -42,7 +42,7 @@ public class EstadoController {
 	public ResponseEntity<Estado> buscar(@PathVariable Long id) {
 		Optional<Estado> estado = estadoRepository.findById(id);
 		
-		if (estado != null) {
+		if (estado.isPresent()) {
 			return ResponseEntity.ok(estado.get());
 		}
 		
@@ -70,7 +70,7 @@ public class EstadoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Estado> remover(@PathVariable Long id) {
+	public ResponseEntity<?> remover(@PathVariable Long id) {
 		try {
 			cadastroEstado.remover(id);
 			return ResponseEntity.noContent().build();
@@ -79,7 +79,7 @@ public class EstadoController {
 			return ResponseEntity.notFound().build();
 			
 		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}		
 	}
 }

@@ -1,6 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -42,11 +43,11 @@ public class CrudCozinhaMain {
 		});
 		
 		// Buscar cozinha com ID = 3
-		Cozinha cozinhaBuscado= cozinhaRepository.getOne(3L);
-		System.out.println("ID: " + cozinhaBuscado.getId() + " - Nome: " + cozinhaBuscado.getNome());
+		Optional<Cozinha> cozinhaBuscado= cozinhaRepository.findById(3L);
+		System.out.println("ID: " + cozinhaBuscado.get().getId() + " - Nome: " + cozinhaBuscado.get().getNome());
 		
 		Cozinha cozinha3 = new Cozinha();
-		cozinha3.setId(cozinhaBuscado.getId());
+		cozinha3.setId(cozinhaBuscado.get().getId());
 		cozinha3.setNome("Russa");
 		
 		// atualizar cozinha com ID = 3
