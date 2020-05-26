@@ -9,11 +9,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,17 +31,10 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 	
 	@Override
 	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
-		Root<Restaurante> root = criteria.from(Restaurante.class);
-		
-//		Predicate nomePredicate = builder.like(root.get("nome"), "%" + nome + "%");
-//		Predicate taxaInicialPredicate = builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial);
-//		Predicate taxaFinalPredicate = builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
-//		criteria.where(nomePredicate, taxaInicialPredicate, taxaFinalPredicate);
+		var builder = entityManager.getCriteriaBuilder();
+		var criteria = builder.createQuery(Restaurante.class);
+		var root = criteria.from(Restaurante.class);
 
-		
-		// predicates criados dinamicamente
 		var predicates = new ArrayList<Predicate>();
 		
 		if (StringUtils.hasText(nome)) {
@@ -60,10 +49,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 			predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
 		}
 		
-		// transformando uma lista num array
 		criteria.where(predicates.toArray(new Predicate[0]));		
 		
-		TypedQuery<Restaurante> query = entityManager.createQuery(criteria);	
+		var query = entityManager.createQuery(criteria);	
 		return query.getResultList();
 	}
 
