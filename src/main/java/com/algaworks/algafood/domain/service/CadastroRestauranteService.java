@@ -9,23 +9,24 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
 public class CadastroRestauranteService {
 
+	private static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso.";
+
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe um cadastro de restaurante de código %d.";
+
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
 	@Autowired
-	private CozinhaRepository cozinhaRepository;
+	private CadastroCozinhaService cozinhaService;
 	
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		
-		Cozinha cozinha = cozinhaRepository.findById(cozinhaId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-				String.format("Não existe um cadastro de cozinha de código %d.", cozinhaId)));
+		Cozinha cozinha = cozinhaService.findOrFail(cozinhaId);
 		
 		restaurante.setCozinha(cozinha);
 		
@@ -35,12 +36,19 @@ public class CadastroRestauranteService {
 	public void remover(Long id) {
 		try {
 			restauranteRepository.deleteById(id);
+			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-				String.format("Não existe um cadastro de restaurante de código %d.", id));
+				String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id));
+			
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-				String.format("Restaurante de código %d não pode ser removido, pois está em uso.", id));
+				String.format(MSG_RESTAURANTE_EM_USO, id));
 		}
+	}
+	
+	public Restaurante findOrFail(Long id) {
+		return restauranteRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
 	}
 }

@@ -63,7 +63,8 @@ public class Restaurante {
 	@Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataAtualização;
 	
-//	@JsonIgnore
+	
+	@JsonIgnore
 	@ManyToMany // (fetch = FetchType.EAGER)
 	@JoinTable(name = "restaurante_forma_pagamento", 
 	           joinColumns = @JoinColumn(name = "restaurante_id"), 
