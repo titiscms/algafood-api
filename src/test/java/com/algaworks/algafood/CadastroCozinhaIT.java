@@ -1,60 +1,124 @@
 package com.algaworks.algafood;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 
-import javax.validation.ConstraintViolationException;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.service.CadastroCozinhaService;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.util.DatabaseCleaner;
+import com.algaworks.algafood.util.ResourceUtils;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource("/application-test.properties")
 public class CadastroCozinhaIT {
 
+	private static final int COZINHA_ID_INEXISTENTE = 100000;
+	private Cozinha cozinhaAmericana;
+	private int quantidadeCozinhasCadastradas;
+	private String jsonCorretoCozinhaChinesa;
+	
+	@LocalServerPort
+	private int port;
+	
 	@Autowired
-	private CadastroCozinhaService cadastroCozinha;
+	private DatabaseCleaner databaseCleaner;
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
+	
+	@Before
+	public void setUp() {
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		RestAssured.port = port;
+		RestAssured.basePath = "/cozinhas";
+		
+		jsonCorretoCozinhaChinesa = ResourceUtils.getContentFromResource("/json/correto/cozinha-chinesa.json");
+		
+		databaseCleaner.clearTables();
+		prepararDados();
+	}
 	
 	@Test
-	public void shouldAtribuirId_WhenCadastrarCozinhaComDadosCorretos() {
-		// scenery
-		Cozinha novaCozinha = new Cozinha();
-		novaCozinha.setNome("Chinesa");
-		
-		// action
-		novaCozinha = cadastroCozinha.salvar(novaCozinha);
-		
-		// validation
-		assertThat(novaCozinha).isNotNull();
-		assertThat(novaCozinha.getId()).isNotNull();
+	public void shouldRetornarStatus200_WhenConsultarCozinhas() {
+		given()
+			.accept(ContentType.JSON)
+		.when()
+			.get()
+		.then()
+			.statusCode(HttpStatus.OK.value());
 	}
 	
-	@Test(expected = ConstraintViolationException.class)
-	public void shouldFalhar_WhenCadastrarCozinhaSemNome() {
-		// scenery
-		Cozinha novaCozinha = new Cozinha();
-		novaCozinha.setNome(null);
+	@Test
+	public void shouldRetornarTodasCozinhas_WhenConsultarCozinhas() {
+		given()
+			.accept(ContentType.JSON)
+		.when()
+			.get()
+		.then()
+			.body("", hasSize(quantidadeCozinhasCadastradas))
+			.body("nome", hasItems(cozinhaAmericana.getNome()));
+	}
+	
+	@Test
+	public void shouldRetornarStatus201_WhenCadastrarCozinha() {
+		given()
+			.body(jsonCorretoCozinhaChinesa)
+			.contentType(ContentType.JSON)
+			.accept(ContentType.JSON)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.CREATED.value());
+	}
+	
+	@Test
+	public void shouldRetornarStatus400_WhenConsultarCozinhaInexistente() {
+		given()
+			.pathParam("cozinhaId", COZINHA_ID_INEXISTENTE)
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+	
+	@Test
+	public void shouldRetornarRespostaEStatusCorretos_WhenConsultarCozinhaExistente() {
+		given()
+			.pathParam("cozinhaId", cozinhaAmericana.getId())
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.OK.value())
+			.body("nome", equalTo(cozinhaAmericana.getNome()));
+	}
+	
+	private void prepararDados() {
+		Cozinha cozinhaTailandesa = new Cozinha();
+	    cozinhaTailandesa.setNome("Tailandesa");
+	    cozinhaRepository.save(cozinhaTailandesa);
+
+	    cozinhaAmericana = new Cozinha();
+	    cozinhaAmericana.setNome("Americana");
+	    cozinhaRepository.save(cozinhaAmericana);
 		
-		// action
-		novaCozinha = cadastroCozinha.salvar(novaCozinha);
-	}
-	
-	@Test(expected = EntidadeEmUsoException.class)
-	public void shouldFalhar_WhenExcluirCozinhaEmUso() {
-		// action
-		cadastroCozinha.remover(1L);
-	}
-	
-	@Test(expected = EntidadeNaoEncontradaException.class)
-	public void shouldFalhar_WhenExcluirCozinhaInexistente() {
-		// action
-		cadastroCozinha.remover(100L);
+		quantidadeCozinhasCadastradas = (int) cozinhaRepository.count();
 	}
 }
