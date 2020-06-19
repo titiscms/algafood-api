@@ -1,8 +1,9 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -20,7 +21,9 @@ public class Problem {
 	private String detail;
 	
 	private String userMessage;
-	private LocalDateTime timestamp;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+	private OffsetDateTime timestamp;
 	private List<Object> objects;
 	
 	@Getter

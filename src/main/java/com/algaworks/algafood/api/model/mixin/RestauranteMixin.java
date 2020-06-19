@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.model.mixin;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +8,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Endereco;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Produto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,10 +21,12 @@ public abstract class RestauranteMixin {
 	private Endereco endereco;
 	
 	@JsonIgnore
-	private LocalDateTime dataCadastro;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+	private OffsetDateTime dataCadastro;
 	
 	@JsonIgnore
-	private LocalDateTime dataAtualização;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+	private OffsetDateTime dataAtualização;
 	
 	
 	@JsonIgnore
