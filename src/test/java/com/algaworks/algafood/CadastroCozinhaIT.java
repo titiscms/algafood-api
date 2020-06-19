@@ -4,6 +4,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +21,13 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.util.DatabaseCleaner;
 import com.algaworks.algafood.util.ResourceUtils;
 
@@ -42,6 +53,14 @@ public class CadastroCozinhaIT {
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 	
+	@Autowired
+	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private WebApplicationContext wac;
+	
+	private MockMvc mockMvc;
+	
 	@Before
 	public void setUp() {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -52,6 +71,8 @@ public class CadastroCozinhaIT {
 		
 		databaseCleaner.clearTables();
 		prepararDados();
+		
+		this.mockMvc = webAppContextSetup(wac).build();
 	}
 	
 	@Test
@@ -110,6 +131,14 @@ public class CadastroCozinhaIT {
 			.body("nome", equalTo(cozinhaAmericana.getNome()));
 	}
 	
+	@Test
+	public void shouldRetornarStatus409_WhenTentarRemoverCozinhaEmUso() throws Exception {
+		mockMvc.perform(delete("/cozinhas/{cozinhaId}", cozinhaAmericana.getId()))
+			.andDo(print())
+			.andExpect(status().isConflict())
+			.andExpect(jsonPath("$.title").value("Entidade em uso"));
+	}
+	
 	private void prepararDados() {
 		Cozinha cozinhaTailandesa = new Cozinha();
 	    cozinhaTailandesa.setNome("Tailandesa");
@@ -118,7 +147,13 @@ public class CadastroCozinhaIT {
 	    cozinhaAmericana = new Cozinha();
 	    cozinhaAmericana.setNome("Americana");
 	    cozinhaRepository.save(cozinhaAmericana);
-		
+	    
+	    Restaurante restauranteCozinhaAmericana = new Restaurante();
+	    restauranteCozinhaAmericana.setNome("American Food");
+	    restauranteCozinhaAmericana.setTaxaFrete(new BigDecimal(7));
+	    restauranteCozinhaAmericana.setCozinha(cozinhaAmericana);
+	    restauranteRepository.save(restauranteCozinhaAmericana);
+	    
 		quantidadeCozinhasCadastradas = (int) cozinhaRepository.count();
 	}
 }
