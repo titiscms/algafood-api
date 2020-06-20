@@ -27,8 +27,8 @@ import javax.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algaworks.algafood.api.core.validation.Groups;
-import com.algaworks.algafood.api.core.validation.ValorZeroIncluiDescricao;
+import com.algaworks.algafood.core.validation.Groups;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
