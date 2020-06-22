@@ -4,22 +4,31 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.algaworks.algafood.api.model.EnderecoDTO;
+import com.algaworks.algafood.domain.model.Endereco;
+
 @Configuration
 public class ModelMapperConfig {
 
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
-	
-//	customização do modelMapper
-//	@Bean
-//	public ModelMapper modelMapper() {
-//		var modelMapper = new ModelMapper();
-//		
+		var modelMapper = new ModelMapper();
+		
 //		modelMapper.createTypeMap(Restaurante.class, RestauranteDTO.class)
-//			.addMapping(Restaurante::getTaxaFrete, RestauranteDTO::setPrecoFrete);
-//		
-//		return modelMapper;
-//	}
+//		.addMapping(Restaurante::getTaxaFrete, RestauranteDTO::setPrecoFrete);
+		
+//		var enderecoToEnderecoDTOTypeMap = modelMapper.createTypeMap(Endereco.class, EnderecoDTO.class);
+//		enderecoToEnderecoDTOTypeMap
+//			.<String>addMapping(
+//					src -> src.getCidade().getEstado().getNome(), (dest, value) -> dest.getCidade().setEstado(value));
+		
+		var enderecoToEnderecoDTOTypeMap = modelMapper.createTypeMap(Endereco.class, EnderecoDTO.class);
+		enderecoToEnderecoDTOTypeMap
+			.<String>addMapping(
+					cidadeSrc -> cidadeSrc.getCidade().getNome(), (cidadeDTODest, value) -> cidadeDTODest.setCidade(value))
+			.<String>addMapping(
+					estadoSrc -> estadoSrc.getCidade().getEstado().getNome(), (estadoDTODest, value) -> estadoDTODest.setEstado(value));
+		
+		return modelMapper;
+	}
 }
