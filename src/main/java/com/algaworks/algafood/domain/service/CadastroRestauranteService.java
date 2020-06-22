@@ -32,6 +32,20 @@ public class CadastroRestauranteService {
 		
 		return restauranteRepository.save(restaurante);
 	}
+	
+	@Transactional
+	public void ativar(Long id) {
+		Restaurante restaurante = findOrFail(id);
+		
+		restaurante.ativar();
+	}
+	
+	@Transactional
+	public void inativar(Long id) {
+		Restaurante restaurante = findOrFail(id);
+		
+		restaurante.inativar();
+	}
 
 	@Transactional
 	public void remover(Long id) {
