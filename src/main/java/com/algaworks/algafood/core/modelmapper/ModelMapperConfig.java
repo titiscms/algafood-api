@@ -28,7 +28,7 @@ public class ModelMapperConfig {
 					cidadeSrc -> cidadeSrc.getCidade().getNome(), (cidadeDTODest, value) -> cidadeDTODest.setCidade(value))
 			.<String>addMapping(
 					estadoSrc -> estadoSrc.getCidade().getEstado().getNome(), (estadoDTODest, value) -> estadoDTODest.setEstado(value));
-		
+				
 		return modelMapper;
 	}
 }
