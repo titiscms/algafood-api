@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -62,7 +62,7 @@ public class CadastroRestauranteService {
 			restauranteRepository.flush();
 			
 		} catch (EmptyResultDataAccessException e) {
-			throw new RestauranteNaoEncontradaException(id);
+			throw new RestauranteNaoEncontradoException(id);
 			
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
@@ -71,6 +71,6 @@ public class CadastroRestauranteService {
 	}
 	
 	public Restaurante findOrFail(Long id) {
-		return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradaException(id));
+		return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(id));
 	}
 }

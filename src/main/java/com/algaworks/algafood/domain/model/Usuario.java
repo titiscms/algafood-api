@@ -48,4 +48,12 @@ public class Usuario {
 			   joinColumns = @JoinColumn(name = "usuario_id"),
 			   inverseJoinColumns = @JoinColumn(name = "grupo_id"))
 	private List<Grupo> grupos = new ArrayList<>();
+	
+	public boolean senhaIsEqual(String senha) {
+		return getSenha().equals(senha);
+	}
+	
+	public boolean senhaIsNotEqual(String senha) {
+		return !senhaIsEqual(senha);
+	}
 }
