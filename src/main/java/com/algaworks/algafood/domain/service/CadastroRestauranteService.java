@@ -58,6 +58,20 @@ public class CadastroRestauranteService {
 		
 		restaurante.inativar();
 	}
+	
+	@Transactional
+	public void abrir(Long id) {
+		Restaurante restaurante = findOrFail(id);
+		
+		restaurante.abrir();
+	}
+	
+	@Transactional
+	public void fechar(Long id) {
+		Restaurante restaurante = findOrFail(id);
+		
+		restaurante.fechar();
+	}
 
 	@Transactional
 	public void remover(Long id) {

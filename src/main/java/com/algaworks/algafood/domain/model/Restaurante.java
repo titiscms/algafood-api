@@ -53,6 +53,9 @@ public class Restaurante {
 	@Column(nullable = false)
 	private Boolean ativo = Boolean.TRUE;
 	
+	@Column(nullable = false)
+	private Boolean aberto = Boolean.TRUE;
+	
 	@CreationTimestamp
 	@Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataCadastro;
@@ -84,5 +87,13 @@ public class Restaurante {
 
 	public void removerFormaPagamento(FormaPagamento formaPagamento) {
 		getFormasPagamento().remove(formaPagamento);
+	}
+	
+	public void abrir() {
+		setAberto(true);
+	}
+	
+	public void fechar() {
+		setAberto(false);
 	}
 }
