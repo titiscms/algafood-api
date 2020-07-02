@@ -71,7 +71,9 @@ INSERT INTO produto (nome, descricao, preco, ativo, restaurante_id) VALUES ('San
 
 INSERT INTO produto (nome, descricao, preco, ativo, restaurante_id) VALUES ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
-INSERT INTO grupo (nome) VALUES ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+INSERT INTO grupo (id, nome) VALUES (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
+
+INSERT INTO grupo_permissao (grupo_id, permissao_id) VALUES (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '123', UTC_TIMESTAMP);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', UTC_TIMESTAMP);
