@@ -12,6 +12,7 @@ DELETE FROM restaurante;
 DELETE FROM restaurante_forma_pagamento;
 DELETE FROM usuario;
 DELETE FROM usuario_grupo;
+DELETE FROM restaurante_usuario_responsavel;
 
 SET foreign_key_checks = 1;
 
@@ -73,6 +74,9 @@ INSERT INTO grupo_permissao (grupo_id, permissao_id) VALUES (1, 1), (1, 2), (2, 
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '123', UTC_TIMESTAMP);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', UTC_TIMESTAMP);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (3, 'José Souza', 'jose.aux@algafood.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (4, 'Ana Martins', 'ana.aux@algafood.com', '123', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', UTC_TIMESTAMP);
 
 INSERT INTO usuario_grupo (usuario_id, grupo_id) VALUES (1, 1), (1, 2), (2, 2);
+
+INSERT INTO restaurante_usuario_responsavel (restaurante_id, usuario_id) VALUES (1, 5), (3, 5);

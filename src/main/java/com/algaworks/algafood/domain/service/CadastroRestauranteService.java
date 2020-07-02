@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
@@ -31,6 +32,9 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamento;
 	
+	@Autowired
+	private CadastroUsuarioService cadastroUsuario; 
+	
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
@@ -49,28 +53,28 @@ public class CadastroRestauranteService {
 	public void ativar(Long id) {
 		Restaurante restaurante = findOrFail(id);
 		
-		restaurante.ativar();
+		restaurante.ativarRestaurante();
 	}
 	
 	@Transactional
 	public void inativar(Long id) {
 		Restaurante restaurante = findOrFail(id);
 		
-		restaurante.inativar();
+		restaurante.inativarRestaurante();
 	}
 	
 	@Transactional
 	public void abrir(Long id) {
 		Restaurante restaurante = findOrFail(id);
 		
-		restaurante.abrir();
+		restaurante.abrirRestaurante();
 	}
 	
 	@Transactional
 	public void fechar(Long id) {
 		Restaurante restaurante = findOrFail(id);
 		
-		restaurante.fechar();
+		restaurante.fecharRestaurante();
 	}
 
 	@Transactional
@@ -102,6 +106,22 @@ public class CadastroRestauranteService {
 		FormaPagamento formaPagamento = cadastroFormaPagamento.findOrFail(formaPagamentoId);
 		
 		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
+
+	@Transactional
+	public void associarUsuario(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = findOrFail(restauranteId);
+		Usuario usuario = cadastroUsuario.findOrFail(usuarioId);
+		
+		restaurante.adicionarUsuario(usuario);
+	}
+
+	@Transactional
+	public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = findOrFail(restauranteId);
+		Usuario usuario = cadastroUsuario.findOrFail(usuarioId);
+		
+		restaurante.removerUsuario(usuario);;
 	}
 	
 	public Restaurante findOrFail(Long id) {
