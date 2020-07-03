@@ -5,9 +5,13 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,14 +58,14 @@ public class Pedido {
 	@Column(name = "data_entrega")
 	private OffsetDateTime dataEntrega;
 	
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itensPedido = new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "restaurante_id", nullable = false)
 	private Restaurante restaurante;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "forma_pagamento_id", nullable = false)
 	private FormaPagamento formaPagamento;
 	
@@ -72,6 +76,17 @@ public class Pedido {
 	@Embedded
 	private Endereco enderecoEntrega;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
-	private StatusPedido status;
+	private StatusPedido status = StatusPedido.CRIADO;
+	
+	public void calcularValorTotal() {
+		getItensPedido().forEach(ItemPedido::calcularPrecoTotal);
+		
+		this.subtotal = getItensPedido().stream()
+				.map(item -> item.getPrecoTotal())
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		this.valorTotal = this.subtotal.add(this.taxaFrete);
+	}
 }
