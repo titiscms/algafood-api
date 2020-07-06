@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+//@JsonFilter("pedidoFilter")
 @Setter
 @Getter
 public class PedidoResumoDTO {

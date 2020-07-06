@@ -46,6 +46,25 @@ public class PedidoController {
 	@Autowired
 	private PedidoDTODisassembler pedidoResumoDTODisassembler;
 	
+//	@GetMapping
+//	public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
+//		List<Pedido> pedidos = pedidoRepository.findAll();
+//		List<PedidoResumoDTO> pedidosResumoDTO = pedidoResumoDTOAssembler.toListPedidoResumoDTO(pedidos);
+//		
+//		MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosResumoDTO);
+//
+//		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+//		filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+//		
+//		if (StringUtils.isNotBlank(campos)) {
+//			filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
+//		} 
+//		
+//		pedidosWrapper.setFilters(filterProvider);
+//		
+//		return pedidosWrapper;
+//	}
+	
 	@GetMapping
 	public List<PedidoResumoDTO> listar() {
 		return pedidoResumoDTOAssembler.toListPedidoResumoDTO(pedidoRepository.findAll());
