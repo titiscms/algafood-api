@@ -25,7 +25,7 @@ import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRespository;
-import com.algaworks.algafood.domain.service.CadastroPedidoService;
+import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -35,7 +35,7 @@ public class PedidoController {
 	private PedidoRespository pedidoRepository;
 	
 	@Autowired
-	private CadastroPedidoService cadastroPedido;
+	private EmissaoPedidoService emissaoPedido;
 	
 	@Autowired
 	private PedidoDTOAssembler pedidoDTOAssembler;
@@ -53,7 +53,7 @@ public class PedidoController {
 	
 	@GetMapping("/{id}")
 	public PedidoDTO buscar(@PathVariable Long id) {
-		Pedido pedido = cadastroPedido.findOrFail(id);
+		Pedido pedido = emissaoPedido.findOrFail(id);
 		
 		return pedidoDTOAssembler.toPedidoDTO(pedido);
 	}
@@ -67,7 +67,7 @@ public class PedidoController {
 			pedido.setCliente(new Usuario());
 			pedido.getCliente().setId(1L);
 						
-			return pedidoDTOAssembler.toPedidoDTO(cadastroPedido.salvar(pedido));
+			return pedidoDTOAssembler.toPedidoDTO(emissaoPedido.emitir(pedido));
 		} catch (PedidoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}

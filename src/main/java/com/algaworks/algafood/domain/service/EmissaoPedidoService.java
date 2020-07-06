@@ -15,7 +15,7 @@ import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRespository;
 
 @Service
-public class CadastroPedidoService {
+public class EmissaoPedidoService {
 
 	@Autowired
 	private PedidoRespository pedidoRepository;
@@ -36,7 +36,7 @@ public class CadastroPedidoService {
 	private CadastroFormaPagamentoService cadastroFormaPagamento;
 	
 	@Transactional
-	public Pedido salvar(Pedido pedido) {
+	public Pedido emitir(Pedido pedido) {
 		validarPedido(pedido);
 		validarItens(pedido);
 		
