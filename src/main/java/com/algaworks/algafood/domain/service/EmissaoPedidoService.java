@@ -46,8 +46,8 @@ public class EmissaoPedidoService {
 		return pedidoRepository.save(pedido);
 	}
 	
-	public Pedido findOrFail(Long id) {
-		return pedidoRepository.findById(id).orElseThrow(() -> new PedidoNaoEncontradoException(id));
+	public Pedido findOrFail(String codigoPedido) {
+		return pedidoRepository.findByCodigo(codigoPedido).orElseThrow(() -> new PedidoNaoEncontradoException(codigoPedido));
 	}
 	
 	private void validarPedido(Pedido pedido) {
