@@ -25,7 +25,9 @@ import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRespository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -66,8 +68,10 @@ public class PedidoController {
 //	}
 	
 	@GetMapping
-	public List<PedidoResumoDTO> listar() {
-		return pedidoResumoDTOAssembler.toListPedidoResumoDTO(pedidoRepository.findAll());
+	public List<PedidoResumoDTO> pesquisar(PedidoFilter filtro) {
+		List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro)); 
+		
+		return pedidoResumoDTOAssembler.toListPedidoResumoDTO(todosPedidos);
 	}
 	
 	@GetMapping("/{codigoPedido}")
