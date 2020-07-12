@@ -32,8 +32,16 @@ public class FotoProduto {
 	private String descricao;
 	
 	@Column(nullable = false)
-	private String contetType;
+	private String contentType;
 	
 	@Column(nullable = false)
 	private Long tamanho;
+	
+	public Long getRestauranteId() {
+		if (getProduto() != null) {
+			return getProduto().getRestaurante().getId();
+		}
+		
+		return null;
+	}
 }
