@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,13 @@ public class RestauranteProdutoFotoController {
 //			throw new RuntimeException(e);
 //		}
 //	}
+	
+	@GetMapping
+	public FotoProdutoDTO buscarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+		FotoProduto fotoProduto = catalogoFotoProduto.findOrFail(restauranteId, produtoId);
+		
+		return fotoProdutoDTOAssembler.toFotoProdutoDTO(fotoProduto);
+	}
 	
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
