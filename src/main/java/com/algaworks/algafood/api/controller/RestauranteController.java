@@ -9,14 +9,13 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,6 +44,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+// para liberar o CORS para qualquer origem é só não especificar nenhuma origem ou configurar como "*"
+@CrossOrigin(origins = "http://192.168.0.12:8000")
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -66,54 +67,15 @@ public class RestauranteController {
 	
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public ResponseEntity<List<RestauranteDTO>> listar() {
-		List<RestauranteDTO> restaurantesDTO = restauranteDTOAssembler.toListRestauranteDTO(restauranteRespository.findAll());
-		
-		return ResponseEntity.ok()
-				.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://192.168.0.12:8000")
-				.body(restaurantesDTO);
+	public List<RestauranteDTO> listar() {
+		return restauranteDTOAssembler.toListRestauranteDTO(restauranteRespository.findAll());
 	}
 	
-//	@JsonView(RestauranteView.ApenasNome.class)
-//	@GetMapping(params = "projecao=apenas-nome")
-//	public List<RestauranteDTO> listarResumo() {
-//		return listar();
-//	}
-	
-//	@GetMapping
-//	public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-//		List<Restaurante> restaurantes = restauranteRespository.findAll();
-//		List<RestauranteDTO> restaurantesDTO = restauranteDTOAssembler.toListRestauranteDTO(restaurantes);
-//		
-//		MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesDTO);
-//		
-//		restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
-//
-//		if ("apenas-nome".equals(projecao)) {
-//			restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
-//		} else if ("completo".equals(projecao)) {
-//			restaurantesWrapper.setSerializationView(null);
-//		}
-//		
-//		return restaurantesWrapper;
-//	}
-	
-//	@GetMapping
-//	public List<RestauranteDTO> listar() {
-//		return restauranteDTOAssembler.toListRestauranteDTO(restauranteRespository.findAll());
-//	}
-//	
-//	@JsonView(RestauranteView.Resumo.class)
-//	@GetMapping(params = "projecao=resumo")
-//	public List<RestauranteDTO> listarResumo() {
-//		return listar();
-//	}
-//	
-//	@JsonView(RestauranteView.ApenasNome.class)
-//	@GetMapping(params = "projecao=apenas-nome")
-//	public List<RestauranteDTO> listarApenasNome() {
-//		return listar();
-//	}
+	@JsonView(RestauranteView.ApenasNome.class)
+	@GetMapping(params = "projecao=apenas-nome")
+	public List<RestauranteDTO> listarResumo() {
+		return listar();
+	}
 	
 	@GetMapping("/{id}")
 	public RestauranteDTO buscar(@PathVariable Long id) {
