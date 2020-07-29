@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algaworks.algafood.api.assembler.FormaPagamentoDTOAssembler;
 import com.algaworks.algafood.api.assembler.FormaPagamentoDTODisassembler;
@@ -44,28 +47,59 @@ public class FormaPagamentoController {
 	private FormaPagamentoDTODisassembler formaPagamentoDTODisassembler;
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoDTO>> listar() {
+	public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		
+		String eTag = "0";
+		
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+		if (dataUltimaAtualizacao != null) {
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
+		}
+		
+		if (request.checkNotModified(eTag)) {
+//			return null; // comum ser usado dessa maneira, mas pode ficar confuso para outro programador
+			return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+		               .cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS).cachePublic())
+		               .eTag(eTag)
+		               .build();
+		}
+		
 		List<FormaPagamento> formasPagamento = formaPagamentoRepository.findAll();
 				
 		List<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoDTOAssembler.toListFormaPagamentoDTO(formasPagamento);
 
 		return ResponseEntity.ok()
-//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)) // cache com duração de 10 segundos
-//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate()) // pode ser armazenado apenas no cache local
-				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) // pode ser armazenado no cache local ou cache compartilhado
-//				.cacheControl(CacheControl.noCache()) // resposta sempre será validada no nosso caso com uso do Etag
-//				.cacheControl(CacheControl.noStore()) // não pode ser cacheado
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+				.eTag(eTag)
 				.body(formasPagamentoDTO);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long id) {
+	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long id, ServletWebRequest request) {
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		
+		String eTag = "0";
+		
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacaoById(id);
+		if (dataUltimaAtualizacao != null) {
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
+		}
+		
+		if (request.checkNotModified(eTag)) {
+			return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+					.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+					.eTag(eTag)
+					.build();
+		}
+		
 		FormaPagamento formaPagamento = cadastroFormaPagamento.findOrFail(id);
 		
 		FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.toFormaPagamentoDTO(formaPagamento);
 		
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+				.eTag(eTag)
 				.body(formaPagamentoDTO);
 	}
 	
