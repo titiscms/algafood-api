@@ -26,6 +26,11 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags = "Cidades")
 @RestController
 @RequestMapping("/cidades")
 public class CidadeController {
@@ -42,19 +47,28 @@ public class CidadeController {
 	@Autowired
 	private CidadeDTODisassembler cidadeDTODisassembler;
 	
+	@ApiOperation("Lista as cidades")
 	@GetMapping
 	public List<CidadeDTO> listar() {
 		return cidadeDTOAssembler.toListCidadeDTO(cidadeRepository.findAll());
 	}
 	
-	@GetMapping("/{id}")
-	public CidadeDTO buscar(@PathVariable Long id) {
+	@ApiOperation("Busca uma cidade por ID")
+	@GetMapping("/{cidadeId}")
+	public CidadeDTO buscar(
+			@ApiParam(value = "ID de uma cidade", example = "1") 
+			@PathVariable(value = "cidadeId") Long id) {
+		
 		return cidadeDTOAssembler.toCidadeDTO(cadastroCidade.findOrFail(id));
 	}
 	
+	@ApiOperation("Cadastra uma cidade")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeDTO adicionar(@RequestBody @Valid CidadeDTOInput cidadeDTOInput) {
+	public CidadeDTO adicionar(
+			@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
+			@RequestBody @Valid CidadeDTOInput cidadeDTOInput) {
+		
 		try {
 			Cidade cidade = cidadeDTODisassembler.toDomainObject(cidadeDTOInput);
 			
@@ -64,8 +78,14 @@ public class CidadeController {
 		}	
 	}
 	
-	@PutMapping("/{id}")
-	public CidadeDTO atualizar(@PathVariable Long id, @RequestBody @Valid CidadeDTOInput cidadeDTOInput) {
+	@ApiOperation("Atualiza uma cidade por ID")
+	@PutMapping("/{cidadeId}")
+	public CidadeDTO atualizar(
+			@ApiParam(value = "ID de uma cidade", example = "1") 
+			@PathVariable(value = "cidadeId") Long id,
+			@ApiParam(name = "corpo", value = "Representação de uma cidade como os novos dados", example = "1")
+			@RequestBody @Valid CidadeDTOInput cidadeDTOInput) {
+		
 		try {
 			Cidade cidadeAtual = cadastroCidade.findOrFail(id);
 			
@@ -77,9 +97,13 @@ public class CidadeController {
 		}
 	}
 	
-	@DeleteMapping("/{id}")
+	@ApiOperation("Exclui uma cidade por ID")
+	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(
+			@ApiParam(value = "ID de uma cidade", example = "1") 
+			@PathVariable(value = "cidadeId") Long id) {
+		
 		cadastroCidade.remover(id);
 	}
 }
