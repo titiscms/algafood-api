@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,16 +25,14 @@ import com.algaworks.algafood.api.assembler.CozinhaDTOAssembler;
 import com.algaworks.algafood.api.assembler.CozinhaDTODisassembler;
 import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.input.CozinhaDTOInput;
+import com.algaworks.algafood.api.openapi.controller.CozinhaControllerOpenApi;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
-import io.swagger.annotations.Api;
-
-@Api(tags = "Cozinhas")
 @RestController
-@RequestMapping("/cozinhas")
-public class CozinhaController {
+@RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
@@ -58,8 +57,8 @@ public class CozinhaController {
 		return cozinhasDTOPage;
 	}
 
-	@GetMapping("/{id}")
-	public CozinhaDTO buscar(@PathVariable Long id) {
+	@GetMapping("/{cozinhaId}")
+	public CozinhaDTO buscar(@PathVariable(value = "cozinhaId") Long id) {
 		return cozinhaDTOAssembler.toCozinhaDTO(cadastroCozinha.findOrFail(id));
 	}
 
@@ -71,8 +70,10 @@ public class CozinhaController {
 		return cozinhaDTOAssembler.toCozinhaDTO(cadastroCozinha.salvar(cozinha));		
 	}
 
-	@PutMapping("/{id}")
-	public CozinhaDTO atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaDTOInput cozinhaDTOInput) {
+	@PutMapping("/{cozinhaId}")
+	public CozinhaDTO atualizar(@PathVariable(value = "cozinhaId") Long id, 
+			@RequestBody @Valid CozinhaDTOInput cozinhaDTOInput) {
+		
 		Cozinha cozinhaAtual = cadastroCozinha.findOrFail(id);
 		
 		cozinhaDTODisassembler.copyToDomainObject(cozinhaDTOInput, cozinhaAtual);
@@ -80,9 +81,9 @@ public class CozinhaController {
 		return cozinhaDTOAssembler.toCozinhaDTO(cadastroCozinha.salvar(cozinhaAtual));
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(@PathVariable(value = "cozinhaId") Long id) {
 		cadastroCozinha.remover(id);
 	}
 }
