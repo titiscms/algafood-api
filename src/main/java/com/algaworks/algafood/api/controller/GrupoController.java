@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.GrupoDTOAssembler;
 import com.algaworks.algafood.api.assembler.GrupoDTODisassembler;
+import com.algaworks.algafood.api.controller.openapi.GrupoControllerOpenApi;
 import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.input.GrupoDTOInput;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -26,7 +27,7 @@ import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 
 	@Autowired
 	private GrupoRepository grupoRepository;
@@ -40,16 +41,19 @@ public class GrupoController {
 	@Autowired
 	private GrupoDTODisassembler grupoDTODisassembler;
 	
+	@Override
 	@GetMapping
 	public List<GrupoDTO> listar() {
 		return grupoDTOAssembler.toListGrupoDTO(grupoRepository.findAll());
 	}
 	
-	@GetMapping("/{id}")
-	public GrupoDTO buscar(@PathVariable Long id) {
+	@Override
+	@GetMapping("/{grupoId}")
+	public GrupoDTO buscar(@PathVariable(value = "grupoId") Long id) {
 		return grupoDTOAssembler.toGrupoDTO(cadastroGrupo.findOrFail(id));
 	}
 	
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoDTO adicionar(@RequestBody @Valid GrupoDTOInput grupoDTOInput) {
@@ -58,8 +62,11 @@ public class GrupoController {
 		return grupoDTOAssembler.toGrupoDTO(cadastroGrupo.salvar(grupo));
 	}
 	
-	@PutMapping("/{id}")
-	public GrupoDTO atualizar(@PathVariable Long id, @RequestBody @Valid GrupoDTOInput grupoDTOInput) {
+	@Override
+	@PutMapping("/{grupoId}")
+	public GrupoDTO atualizar(@PathVariable(value = "grupoId") Long id, 
+			@RequestBody @Valid GrupoDTOInput grupoDTOInput) {
+		
 		Grupo grupoAtual = cadastroGrupo.findOrFail(id);
 		
 		grupoDTODisassembler.copyToDomainObject(grupoDTOInput, grupoAtual);
@@ -67,9 +74,10 @@ public class GrupoController {
 		return grupoDTOAssembler.toGrupoDTO(cadastroGrupo.salvar(grupoAtual));
 	}
 	
-	@DeleteMapping("/{id}")
+	@Override
+	@DeleteMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(@PathVariable(value = "grupoId") Long id) {
 		cadastroGrupo.remover(id);
 	}
 }
