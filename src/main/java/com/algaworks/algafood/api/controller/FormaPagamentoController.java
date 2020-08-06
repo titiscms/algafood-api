@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +27,14 @@ import com.algaworks.algafood.api.assembler.FormaPagamentoDTOAssembler;
 import com.algaworks.algafood.api.assembler.FormaPagamentoDTODisassembler;
 import com.algaworks.algafood.api.model.FormaPagamentoDTO;
 import com.algaworks.algafood.api.model.input.FormaPagamentoDTOInput;
+import com.algaworks.algafood.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
-@RequestMapping("/formas-pagamento")
-public class FormaPagamentoController {
+@RequestMapping(path = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
 	@Autowired
 	private FormaPagamentoRepository formaPagamentoRepository;
@@ -58,7 +60,6 @@ public class FormaPagamentoController {
 		}
 		
 		if (request.checkNotModified(eTag)) {
-//			return null; // comum ser usado dessa maneira, mas pode ficar confuso para outro programador
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
 		               .cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS).cachePublic())
 		               .eTag(eTag)
@@ -75,8 +76,8 @@ public class FormaPagamentoController {
 				.body(formasPagamentoDTO);
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long id, ServletWebRequest request) {
+	@GetMapping("/{FormaPagamentoId}")
+	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable("FormaPagamentoId") Long id, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		
 		String eTag = "0";
@@ -111,8 +112,8 @@ public class FormaPagamentoController {
 		return formaPagamentoDTOAssembler.toFormaPagamentoDTO(cadastroFormaPagamento.salvar(formaPagamento));
 	}
 	
-	@PutMapping("/{id}")
-	public FormaPagamentoDTO atualizar(@PathVariable Long id, @RequestBody @Valid FormaPagamentoDTOInput formaPagamentoDTOInput) {
+	@PutMapping("/{FormaPagamentoId}")
+	public FormaPagamentoDTO atualizar(@PathVariable("FormaPagamentoId") Long id, @RequestBody @Valid FormaPagamentoDTOInput formaPagamentoDTOInput) {
 		FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.findOrFail(id);
 		
 		formaPagamentoDTODisassembler.copyToDomainObject(formaPagamentoDTOInput, formaPagamentoAtual);
@@ -120,9 +121,9 @@ public class FormaPagamentoController {
 		return formaPagamentoDTOAssembler.toFormaPagamentoDTO(cadastroFormaPagamento.salvar(formaPagamentoAtual));
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{FormaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(@PathVariable("FormaPagamentoId") Long id) {
 		cadastroFormaPagamento.remover(id);
 	}
 }
