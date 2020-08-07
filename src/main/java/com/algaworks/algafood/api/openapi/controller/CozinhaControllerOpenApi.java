@@ -25,7 +25,7 @@ public interface CozinhaControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
 	})
 	public CozinhaDTO buscar(
-			@ApiParam(value = "ID de uma cozinha", example = "1")
+			@ApiParam(value = "ID de uma cozinha", example = "1", required = true)
 			Long id);		
 	
 	@ApiOperation("Cadastra uma cozinha")
@@ -33,7 +33,7 @@ public interface CozinhaControllerOpenApi {
 		@ApiResponse(code = 201, message = "Cozinha cadastrada")
 	})
 	public CozinhaDTO adicionar(
-			@ApiParam(name = "corpo", value = "Representação de uma nova cozinha")
+			@ApiParam(name = "corpo", value = "Representação de uma nova cozinha", required = true)
 			CozinhaDTOInput cozinhaDTOInput);
 	
 	@ApiOperation("Atualiza uma cozinha por ID")
@@ -42,7 +42,7 @@ public interface CozinhaControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
 	})
 	public CozinhaDTO atualizar(
-			@ApiParam(value = "ID de uma Cozinha", example = "1") 
+			@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) 
 			Long id,
 			@ApiParam(name = "corpo", value = "Representação de uma cozinha como os novos dados", example = "1") 
 			CozinhaDTOInput cozinhaDTOInput);
@@ -53,6 +53,6 @@ public interface CozinhaControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
 	})
 	public void remover(
-			@ApiParam(value = "ID de uma cozinha", example = "1") 
+			@ApiParam(value = "ID de uma cozinha", example = "1", required = true) 
 			Long id); 
 }

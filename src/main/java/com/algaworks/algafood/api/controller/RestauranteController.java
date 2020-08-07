@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -31,6 +32,7 @@ import com.algaworks.algafood.api.assembler.RestauranteDTODisassembler;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteDTOInput;
 import com.algaworks.algafood.api.model.view.RestauranteView;
+import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.core.validation.ValidationException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
@@ -44,8 +46,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi {
 
 	@Autowired
 	private RestauranteRepository restauranteRespository;
@@ -74,8 +76,8 @@ public class RestauranteController {
 		return listar();
 	}
 	
-	@GetMapping("/{id}")
-	public RestauranteDTO buscar(@PathVariable Long id) {
+	@GetMapping("/{restauranteId}")
+	public RestauranteDTO buscar(@PathVariable(value = "restauranteId") Long id) {
 		Restaurante restaurante =  cadastroRestaurante.findOrFail(id);
 
 		return restauranteDTOAssembler.toRestauranteDTO(restaurante);
@@ -93,8 +95,8 @@ public class RestauranteController {
 		}	
 	}
 	
-	@PutMapping("/{id}")
-	public RestauranteDTO atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteDTOInput restauranteDTOInput) {
+	@PutMapping("/{restauranteId}")
+	public RestauranteDTO atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody @Valid RestauranteDTOInput restauranteDTOInput) {
 		try {
 			Restaurante restauranteAtual = cadastroRestaurante.findOrFail(id);
 			
@@ -106,8 +108,8 @@ public class RestauranteController {
 		}	
 	}
 	
-	@PatchMapping("/{id}")
-	public RestauranteDTO atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
+	@PatchMapping("/{restauranteId}")
+	public RestauranteDTO atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
 		Restaurante restauranteAtual = cadastroRestaurante.findOrFail(id);
 		
 		merge(campos, restauranteAtual, request);
@@ -118,21 +120,21 @@ public class RestauranteController {
 		return atualizar(id, restauranteDTOInput);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{restauranteId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(@PathVariable(value = "restauranteId") Long id) {
 		cadastroRestaurante.remover(id);
 	}
 	
-	@PutMapping("/{id}/ativo")
+	@PutMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void ativar(@PathVariable Long id) {
+	public void ativar(@PathVariable(value = "restauranteId") Long id) {
 		cadastroRestaurante.ativar(id);
 	}
 	
-	@DeleteMapping("/{id}/ativo")
+	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inativar(@PathVariable Long id) {
+	public void inativar(@PathVariable(value = "restauranteId") Long id) {
 		cadastroRestaurante.inativar(id);
 	}
 	
@@ -156,15 +158,15 @@ public class RestauranteController {
 		}
 	}
 	
-	@PutMapping("/{id}/abertura")
+	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void abrir(@PathVariable Long id) {
+	public void abrir(@PathVariable(value = "restauranteId") Long id) {
 		cadastroRestaurante.abrir(id);
 	}
 	
-	@PutMapping("/{id}/fechamento")
+	@PutMapping("/{restauranteId}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void fechar(@PathVariable Long id) {
+	public void fechar(@PathVariable(value = "restauranteId") Long id) {
 		cadastroRestaurante.fechar(id);
 	}
 	
