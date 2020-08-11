@@ -26,7 +26,7 @@ public interface PedidoControllerOpenApi {
 				name = "campos", paramType = "query", type = "string")
 	})
 	@ApiOperation("Pesquisa os pedidos")
-	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro,	Pageable pageable);
+	Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro,	Pageable pageable);
 	
 	@ApiImplicitParams({
 		@ApiImplicitParam(
@@ -37,7 +37,7 @@ public interface PedidoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class)
 	})
 	@ApiOperation("Busca um pedido pelo código")
-	public PedidoDTO buscar(
+	PedidoDTO buscar(
 			@ApiParam(value = "Código de um pedido", example = "ad759d44-3af1-4fcc-a022-52bdb374a23c", required = true)
 			String codigoPedido);
 	
@@ -45,7 +45,7 @@ public interface PedidoControllerOpenApi {
 		@ApiResponse(code = 201, message = "Pedido registrado"),
 	})
 	@ApiOperation("Registra um pedido")
-	public PedidoDTO adicionar(
+	PedidoDTO adicionar(
 			@ApiParam(name = "corpo", value = "Representação de um novo pedido", required = true)
 			PedidoDTOInput pedidoDTOInput);
 }
