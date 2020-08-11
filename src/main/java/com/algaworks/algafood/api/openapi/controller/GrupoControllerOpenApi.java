@@ -29,7 +29,7 @@ public interface GrupoControllerOpenApi {
 	
 	@ApiOperation("Cadastra um grupo")
 	@ApiResponses({
-		@ApiResponse(code = 201, message = "Grupo cadastrado"),
+		@ApiResponse(code = 201, message = "Grupo cadastrado")
 	})
 	GrupoDTO adicionar(
 			@ApiParam(name = "corpo", value = "Representação de um novo grupo", required = true)

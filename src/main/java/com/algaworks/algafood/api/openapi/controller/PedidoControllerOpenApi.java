@@ -26,7 +26,7 @@ public interface PedidoControllerOpenApi {
 				value = "Nome das propriedades para filtrar na resposta, separados por vírgula",
 				name = "campos", paramType = "query", type = "string")
 	})
-	Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro,	Pageable pageable);
+	Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, Pageable pageable);
 	
 	@ApiOperation("Busca um pedido pelo código")
 	@ApiImplicitParams({
@@ -43,7 +43,7 @@ public interface PedidoControllerOpenApi {
 	
 	@ApiOperation("Registra um pedido")
 	@ApiResponses({
-		@ApiResponse(code = 201, message = "Pedido registrado"),
+		@ApiResponse(code = 201, message = "Pedido registrado")
 	})
 	PedidoDTO adicionar(
 			@ApiParam(name = "corpo", value = "Representação de um novo pedido", required = true)
