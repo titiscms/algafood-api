@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,11 +91,11 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
-			@Valid FotoProdutoDTOInput fotoProdutoDTOInput) throws IOException {
+			@Valid FotoProdutoDTOInput fotoProdutoDTOInput, @RequestPart(required = true) MultipartFile arquivo) throws IOException {
 		
 		Produto produto = cadastroProduto.findOrFail(restauranteId, produtoId);
 		
-		MultipartFile arquivo = fotoProdutoDTOInput.getArquivo();
+//		MultipartFile arquivo = fotoProdutoDTOInput.getArquivo();
 		
 		FotoProduto foto = new FotoProduto();
 		foto.setProduto(produto);
