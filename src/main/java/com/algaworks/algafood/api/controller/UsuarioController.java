@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +23,14 @@ import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.api.model.input.UsuarioDTOInput;
 import com.algaworks.algafood.api.model.input.UsuarioDTOInputNomeEmail;
 import com.algaworks.algafood.api.model.input.UsuarioDTOInputSenha;
+import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioController {
+@RequestMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioController implements UsuarioControllerOpenApi {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -47,8 +49,8 @@ public class UsuarioController {
 		return usuarioDTOAssembler.toListUsuarioDTO(usuarioRepository.findAll());
 	}
 	
-	@GetMapping("/{id}")
-	public UsuarioDTO buscar(@PathVariable Long id) {
+	@GetMapping("/{usuarioId}")
+	public UsuarioDTO buscar(@PathVariable(value = "usuarioId") Long id) {
 		return usuarioDTOAssembler.toUsuarioDTO(cadastroUsuario.findOrFail(id));
 	}
 	
@@ -60,8 +62,10 @@ public class UsuarioController {
 		return usuarioDTOAssembler.toUsuarioDTO(cadastroUsuario.salvar(usuario));
 	}
 	
-	@PutMapping("/{id}")
-	public UsuarioDTO atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTOInputNomeEmail usuarioDTOInputNomeEmail) {
+	@PutMapping("/{usuarioId}")
+	public UsuarioDTO atualizar(@PathVariable(value = "usuarioId") Long id, 
+			@RequestBody @Valid UsuarioDTOInputNomeEmail usuarioDTOInputNomeEmail) {
+		
 		Usuario usuarioAtual = cadastroUsuario.findOrFail(id);
 		
 		usuarioDTODisassembler.copyToDomainObject(usuarioDTOInputNomeEmail, usuarioAtual);
@@ -69,15 +73,17 @@ public class UsuarioController {
 		return usuarioDTOAssembler.toUsuarioDTO(cadastroUsuario.salvar(usuarioAtual));
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(@PathVariable(value = "usuarioId") Long id) {
 		cadastroUsuario.remover(id);
 	}
 	
-	@PutMapping("/{id}/senha")
+	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void atualizarSenha(@PathVariable Long id, @RequestBody @Valid UsuarioDTOInputSenha usuarioDTOInputSenha) {
+	public void atualizarSenha(@PathVariable(value = "usuarioId") Long id, 
+			@RequestBody @Valid UsuarioDTOInputSenha usuarioDTOInputSenha) {
+		
 		cadastroUsuario.alterarSenha(id, usuarioDTOInputSenha.getSenhaAtual(), usuarioDTOInputSenha.getNovaSenha());
 	}
 }
