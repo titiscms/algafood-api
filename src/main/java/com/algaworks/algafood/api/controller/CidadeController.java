@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.ResourceUriHelper;
 import com.algaworks.algafood.api.assembler.CidadeDTOAssembler;
 import com.algaworks.algafood.api.assembler.CidadeDTODisassembler;
 import com.algaworks.algafood.api.model.CidadeDTO;
@@ -63,7 +64,11 @@ public class CidadeController implements CidadeControllerOpenApi {
 		try {
 			Cidade cidade = cidadeDTODisassembler.toDomainObject(cidadeDTOInput);
 			
-			return cidadeDTOAssembler.toCidadeDTO(cadastroCidade.salvar(cidade));
+			CidadeDTO cidadeDTO = cidadeDTOAssembler.toCidadeDTO(cadastroCidade.salvar(cidade));
+					
+			ResourceUriHelper.addUriInResponseHeader(cidadeDTO.getId());
+			
+			return cidadeDTO;
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}	
