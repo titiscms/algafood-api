@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -54,7 +56,23 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Override
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable(value = "cidadeId") Long id) {
-		return cidadeDTOAssembler.toCidadeDTO(cadastroCidade.findOrFail(id));
+		Cidade cidade = cadastroCidade.findOrFail(id);
+		
+		CidadeDTO cidadeDTO = cidadeDTOAssembler.toCidadeDTO(cidade);
+		
+		cidadeDTO.add(linkTo(CidadeController.class).slash(cidadeDTO.getId()).withSelfRel());
+//		cidadeDTO.add(new Link("http://localhost:8080/cidades/" + id, IanaLinkRelations.SELF));
+//		cidadeDTO.add(new Link("http://localhost:8080/cidades/" + id));
+
+		cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
+//		cidadeDTO.add(new Link("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
+//		cidadeDTO.add(new Link("http://localhost:8080/cidades", "cidades"));
+		
+		cidadeDTO.getEstado().add(linkTo(EstadoController.class).slash(cidadeDTO.getEstado().getId()).withSelfRel());
+//		cidadeDTO.getEstado().add(new Link("http://localhost:8080/estados/" + cidade.getEstado().getId(), IanaLinkRelations.SELF));
+//		cidadeDTO.getEstado().add(new Link("http://localhost:8080/estados/" + cidade.getEstado().getId()));
+		
+		return cidadeDTO;
 	}
 	
 	@Override
