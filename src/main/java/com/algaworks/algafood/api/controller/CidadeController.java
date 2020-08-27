@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,8 +51,28 @@ public class CidadeController implements CidadeControllerOpenApi {
 	
 	@Override
 	@GetMapping
-	public List<CidadeDTO> listar() {
-		return cidadeDTOAssembler.toListCidadeDTO(cidadeRepository.findAll());
+	public CollectionModel<CidadeDTO> listar() {
+		List<Cidade> cidades = cidadeRepository.findAll();
+		
+		List<CidadeDTO>  cidadesDTO = cidadeDTOAssembler.toListCidadeDTO(cidades);
+		
+		cidadesDTO.forEach(cidadeDTO -> {
+			cidadeDTO.add(linkTo(methodOn(CidadeController.class)
+					.buscar(cidadeDTO.getId())).withSelfRel());
+
+			cidadeDTO.add(linkTo(methodOn(CidadeController.class)
+					.listar()).withRel("cidades"));
+			
+			cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
+					.buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+		});
+		
+		CollectionModel<CidadeDTO> cidadesCollectionModel = new CollectionModel<>(cidadesDTO);
+		
+		cidadesCollectionModel.add(linkTo(methodOn(CidadeController.class)
+				.listar()).withSelfRel());
+		
+		return cidadesCollectionModel;
 	}
 	
 	@Override
@@ -62,25 +83,13 @@ public class CidadeController implements CidadeControllerOpenApi {
 		CidadeDTO cidadeDTO = cidadeDTOAssembler.toCidadeDTO(cidade);
 		
 		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-				.buscar(cidadeDTO.getId()))
-				.withSelfRel());
-//		cidadeDTO.add(linkTo(CidadeController.class).slash(cidadeDTO.getId()).withSelfRel());
-//		cidadeDTO.add(new Link("http://localhost:8080/cidades/" + id, IanaLinkRelations.SELF));
-//		cidadeDTO.add(new Link("http://localhost:8080/cidades/" + id));
+				.buscar(cidadeDTO.getId())).withSelfRel());
 
 		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-				.listar())
-				.withRel("cidades"));
-//		cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
-//		cidadeDTO.add(new Link("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
-//		cidadeDTO.add(new Link("http://localhost:8080/cidades", "cidades"));
+				.listar()).withRel("cidades"));
 		
 		cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeDTO.getEstado().getId()))
-				.withSelfRel());
-//		cidadeDTO.getEstado().add(linkTo(EstadoController.class).slash(cidadeDTO.getEstado().getId()).withSelfRel());
-//		cidadeDTO.getEstado().add(new Link("http://localhost:8080/estados/" + cidade.getEstado().getId(), IanaLinkRelations.SELF));
-//		cidadeDTO.getEstado().add(new Link("http://localhost:8080/estados/" + cidade.getEstado().getId()));
+				.buscar(cidadeDTO.getEstado().getId())).withSelfRel());
 		
 		return cidadeDTO;
 	}
