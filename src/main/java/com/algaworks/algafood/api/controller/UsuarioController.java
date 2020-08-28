@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,13 +46,17 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	private UsuarioDTODisassembler usuarioDTODisassembler;
 	
 	@GetMapping
-	public List<UsuarioDTO> listar() {
-		return usuarioDTOAssembler.toListUsuarioDTO(usuarioRepository.findAll());
+	public CollectionModel<UsuarioDTO> listar() {
+		List<Usuario> usuarios = usuarioRepository.findAll();
+
+		return usuarioDTOAssembler.toCollectionModel(usuarios);
 	}
 	
 	@GetMapping("/{usuarioId}")
 	public UsuarioDTO buscar(@PathVariable(value = "usuarioId") Long id) {
-		return usuarioDTOAssembler.toUsuarioDTO(cadastroUsuario.findOrFail(id));
+		Usuario usuario = cadastroUsuario.findOrFail(id);
+		
+		return usuarioDTOAssembler.toModel(usuario);
 	}
 	
 	@PostMapping
@@ -59,7 +64,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioDTOInput usuarioDTOInput) {
 		Usuario usuario = usuarioDTODisassembler.toDomainObject(usuarioDTOInput);
 				
-		return usuarioDTOAssembler.toUsuarioDTO(cadastroUsuario.salvar(usuario));
+		return usuarioDTOAssembler.toModel(cadastroUsuario.salvar(usuario));
 	}
 	
 	@PutMapping("/{usuarioId}")
@@ -70,7 +75,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		
 		usuarioDTODisassembler.copyToDomainObject(usuarioDTOInputNomeEmail, usuarioAtual);
 		
-		return usuarioDTOAssembler.toUsuarioDTO(cadastroUsuario.salvar(usuarioAtual));
+		return usuarioDTOAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
 	}
 	
 	@DeleteMapping("/{usuarioId}")

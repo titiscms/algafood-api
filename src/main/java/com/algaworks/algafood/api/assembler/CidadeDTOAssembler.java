@@ -29,11 +29,6 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 		CidadeDTO cidadeDTO = createModelWithId(cidade.getId(), cidade);
 		
 		modelMapper.map(cidade, cidadeDTO);
-		
-//		CidadeDTO cidadeDTO = modelMapper.map(cidade, CidadeDTO.class);
-//		
-//		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-//				.buscar(cidadeDTO.getId())).withSelfRel());
 
 		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
 				.listar()).withRel("cidades"));
