@@ -1,7 +1,17 @@
 {
-    "nome": "Thai Food",
-    "taxaFrete": 15,
-    "cozinha": {
-        "id": 1000000
-      }
+  "nome": "Thai Food",
+  "taxaFrete": 10,
+  "cozinha": {
+      "id": 1000000000000
+  },
+  "endereco": {
+    "cep": "38400-999",
+    "logradouro": "Rua João Pinheiro",
+    "numero": "1000",
+    "complemento": null,
+    "bairro": "Centro",
+    "cidade": {
+      "id": 1
+    }
+  }
 }

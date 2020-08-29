@@ -92,8 +92,9 @@ public class CadastroCozinhaIT {
 		.when()
 			.get()
 		.then()
-			.body("", hasSize(quantidadeCozinhasCadastradas))
-			.body("nome", hasItems(cozinhaAmericana.getNome()));
+			.root("content")
+				.content("nome", hasItems(cozinhaAmericana.getNome()))
+			.body("totalElements", hasSize(quantidadeCozinhasCadastradas));
 	}
 	
 	@Test

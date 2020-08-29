@@ -24,9 +24,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.util.DatabaseCleaner;
 import com.algaworks.algafood.util.ResourceUtils;
@@ -58,6 +62,12 @@ public class CadastroRestauranteIT {
     
     @Autowired
     private RestauranteRepository restauranteRepository;
+    
+    @Autowired
+    private EstadoRepository estadoRepository;
+    
+    @Autowired
+    private CidadeRepository cidadeRepository;
 	   
     private String jsonRestauranteCorreto;
     private String jsonRestauranteSemFrete;
@@ -178,7 +188,7 @@ public class CadastroRestauranteIT {
 				.accept(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.title").value(MSG_INCOMPREENSIVEL_PROBLEM_TITLE)); 
     }
 	
@@ -190,11 +200,20 @@ public class CadastroRestauranteIT {
 				.accept(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.title").value(DADOS_INVALIDOS_PROBLEM_TITLE)); 
 	}
 	
     private void prepararDados() {
+		Estado estado = new Estado();
+		estado.setNome("Minas Gerais");
+		estadoRepository.save(estado);
+		
+		Cidade cidade = new Cidade();
+		cidade.setNome("Belo Horizonte");
+		cidade.setEstado(estado);
+		cidadeRepository.save(cidade);
+		
         Cozinha cozinhaBrasileira = new Cozinha();
         cozinhaBrasileira.setNome("Brasileira");
         cozinhaRepository.save(cozinhaBrasileira);
