@@ -1,14 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,24 +55,25 @@ public class PedidoController implements PedidoControllerOpenApi {
 	@Autowired
 	private PedidoDTODisassembler pedidoResumoDTODisassembler;
 	
+	@Autowired
+	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+	
 	@GetMapping
-	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
+	public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		pageable = traduzirPageable(pageable);
 		
-		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable); 
+		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
 		
-		List<PedidoResumoDTO> pedidosResumoDTO = pedidoResumoDTOAssembler.toListPedidoResumoDTO(pedidosPage.getContent());
+		PagedModel<PedidoResumoDTO> pedidosPagedModel = pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoDTOAssembler);
 		
-		Page<PedidoResumoDTO> pedidosResumoDTOPage = new PageImpl<>(pedidosResumoDTO, pageable, pedidosPage.getTotalElements());
-		
-		return pedidosResumoDTOPage;
+		return pedidosPagedModel;
 	}
 	
 	@GetMapping("/{codigoPedido}")
 	public PedidoDTO buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.findOrFail(codigoPedido);
 		
-		return pedidoDTOAssembler.toPedidoDTO(pedido);
+		return pedidoDTOAssembler.toModel(pedido);
 	}
 	
 	@PostMapping
@@ -85,7 +85,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 			pedido.setCliente(new Usuario());
 			pedido.getCliente().setId(1L);
 						
-			return pedidoDTOAssembler.toPedidoDTO(emissaoPedido.emitir(pedido));
+			return pedidoDTOAssembler.toModel(emissaoPedido.emitir(pedido));
 		} catch (PedidoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}

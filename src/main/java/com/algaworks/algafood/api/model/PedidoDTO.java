@@ -4,13 +4,17 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "pedidos")
 @Setter
 @Getter
-public class PedidoDTO {
+public class PedidoDTO extends RepresentationModel<PedidoDTO> {
 	
 	@ApiModelProperty(example = "ad759d44-3af1-4fcc-a022-52bdb374a23c")
 	private String codigo;

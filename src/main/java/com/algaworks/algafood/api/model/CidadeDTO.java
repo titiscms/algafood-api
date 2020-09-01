@@ -17,5 +17,6 @@ public class CidadeDTO extends RepresentationModel<CidadeDTO> {
 	
 	@ApiModelProperty(example = "Uberlandia")
 	private String nome;
+	
 	private EstadoDTO estado;
 }
