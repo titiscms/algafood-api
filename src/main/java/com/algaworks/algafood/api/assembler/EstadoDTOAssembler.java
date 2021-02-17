@@ -36,8 +36,7 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
 	}
 	
 	@Override
-	public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> entities) {
-		return super.toCollectionModel(entities)
-				.add(algaLinks.linkToEstados());
+	public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> estados) {
+		return super.toCollectionModel(estados).add(algaLinks.linkToEstados());
 	}
 }
