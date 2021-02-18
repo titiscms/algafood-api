@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	private FormaPagamentoDTODisassembler formaPagamentoDTODisassembler;
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+	public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		
 		String eTag = "0";
@@ -68,7 +69,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		
 		List<FormaPagamento> formasPagamento = formaPagamentoRepository.findAll();
 				
-		List<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoDTOAssembler.toListFormaPagamentoDTO(formasPagamento);
+		CollectionModel<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoDTOAssembler.toCollectionModel(formasPagamento);
 
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
@@ -96,7 +97,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		
 		FormaPagamento formaPagamento = cadastroFormaPagamento.findOrFail(id);
 		
-		FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.toFormaPagamentoDTO(formaPagamento);
+		FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.toModel(formaPagamento);
 		
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
@@ -109,7 +110,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoDTOInput formaPagamentoDTOInput) {
 		FormaPagamento formaPagamento = formaPagamentoDTODisassembler.toDomainObject(formaPagamentoDTOInput);
 		
-		return formaPagamentoDTOAssembler.toFormaPagamentoDTO(cadastroFormaPagamento.salvar(formaPagamento));
+		return formaPagamentoDTOAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamento));
 	}
 	
 	@PutMapping("/{FormaPagamentoId}")
@@ -118,7 +119,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		
 		formaPagamentoDTODisassembler.copyToDomainObject(formaPagamentoDTOInput, formaPagamentoAtual);
 		
-		return formaPagamentoDTOAssembler.toFormaPagamentoDTO(cadastroFormaPagamento.salvar(formaPagamentoAtual));
+		return formaPagamentoDTOAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamentoAtual));
 	}
 	
 	@DeleteMapping("/{FormaPagamentoId}")
