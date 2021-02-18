@@ -37,4 +37,5 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
 
 		return pedidoResumoDTO;
 	}
+	
 }

@@ -46,7 +46,22 @@ public class RestauranteDTOAssembler
         
 		restauranteDTO.add(algaLinks.linkToRestauranteResponsaveis(restaurante.getId(), "responsaveis"));
 		
+		if (restaurante.ativacaoPermitida()) {
+			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+		} 
 		
+		if (restaurante.inativacaoPermitida()) {
+			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "inativar"));
+		} 
+		
+		if (restaurante.aberturaPermitida()) {
+			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "abrir"));
+		} 
+
+		if (restaurante.fechamentoPermitido()) {
+			restauranteDTO.add(algaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+		} 
+
 		return restauranteDTO;
 	}
 	
