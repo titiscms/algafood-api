@@ -1,10 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,14 +43,14 @@ public class GrupoController implements GrupoControllerOpenApi {
 	
 	@Override
 	@GetMapping
-	public List<GrupoDTO> listar() {
-		return grupoDTOAssembler.toListGrupoDTO(grupoRepository.findAll());
+	public CollectionModel<GrupoDTO> listar() {
+		return grupoDTOAssembler.toCollectionModel(grupoRepository.findAll());
 	}
 	
 	@Override
 	@GetMapping("/{grupoId}")
 	public GrupoDTO buscar(@PathVariable(value = "grupoId") Long id) {
-		return grupoDTOAssembler.toGrupoDTO(cadastroGrupo.findOrFail(id));
+		return grupoDTOAssembler.toModel(cadastroGrupo.findOrFail(id));
 	}
 	
 	@Override
@@ -60,7 +59,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 	public GrupoDTO adicionar(@RequestBody @Valid GrupoDTOInput grupoDTOInput) {
 		Grupo grupo = grupoDTODisassembler.toDomainObject(grupoDTOInput);
 		
-		return grupoDTOAssembler.toGrupoDTO(cadastroGrupo.salvar(grupo));
+		return grupoDTOAssembler.toModel(cadastroGrupo.salvar(grupo));
 	}
 	
 	@Override
@@ -72,7 +71,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 		
 		grupoDTODisassembler.copyToDomainObject(grupoDTOInput, grupoAtual);
 
-		return grupoDTOAssembler.toGrupoDTO(cadastroGrupo.salvar(grupoAtual));
+		return grupoDTOAssembler.toModel(cadastroGrupo.salvar(grupoAtual));
 	}
 	
 	@Override
