@@ -6,10 +6,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.hateoas.TemplateVariable.VariableType;
 
 import com.algaworks.algafood.api.controller.CidadeController;
 import com.algaworks.algafood.api.controller.CozinhaController;
@@ -19,6 +19,7 @@ import com.algaworks.algafood.api.controller.PedidoController;
 import com.algaworks.algafood.api.controller.RestauranteController;
 import com.algaworks.algafood.api.controller.RestauranteFormaPagamentoController;
 import com.algaworks.algafood.api.controller.RestauranteProdutoController;
+import com.algaworks.algafood.api.controller.RestauranteProdutoFotoController;
 import com.algaworks.algafood.api.controller.RestauranteUsuarioController;
 import com.algaworks.algafood.api.controller.UsuarioController;
 import com.algaworks.algafood.api.controller.UsuarioGrupoController;
@@ -198,6 +199,22 @@ public class AlgaLinks {
 	
 	public Link linkToProduto(Long restauranteId, Long produtoId) {
 		return linkToProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToProdutos(Long restauranteId, String rel) {
+	    return linkTo(methodOn(RestauranteProdutoController.class).listar(restauranteId, null)).withRel(rel);
+	}
+
+	public Link linkToProdutos(Long restauranteId) {
+	    return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+		return linkTo(methodOn(RestauranteProdutoFotoController.class).buscarDadosFoto(restauranteId, produtoId)).withRel(rel);
+	}
+	
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+	    return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
 	}
 	
 	public Link linkToCozinhas(String rel) {

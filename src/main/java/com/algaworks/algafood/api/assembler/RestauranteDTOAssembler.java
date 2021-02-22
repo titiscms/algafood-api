@@ -35,16 +35,21 @@ public class RestauranteDTOAssembler
 		restauranteDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
 		
 		restauranteDTO.getCozinha().add(algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
-		
-		restauranteDTO.getEndereco().add(algaLinks.linkToCidade(
-				restaurante.getEndereco().getCidade().getId()).withRel("cidade"));
-		
-		restauranteDTO.getEndereco().add(algaLinks.linkToEstado(
-				restaurante.getEndereco().getCidade().getEstado().getId()).withRel("estado"));
-        
+		        
 		restauranteDTO.add(algaLinks.linkToRestauranteFormasPagamento(restaurante.getId(), "formas-pagamento"));
         
 		restauranteDTO.add(algaLinks.linkToRestauranteResponsaveis(restaurante.getId(), "responsaveis"));
+		
+		if (restauranteDTO.getEndereco() != null 
+	            && restauranteDTO.getEndereco().getCidade() != null
+	            && restauranteDTO.getEndereco().getEstado() != null) {
+			
+			restauranteDTO.getEndereco().add(algaLinks.linkToCidade(
+					restaurante.getEndereco().getCidade().getId()).withRel("cidade"));
+			
+			restauranteDTO.getEndereco().add(algaLinks.linkToEstado(
+					restaurante.getEndereco().getCidade().getEstado().getId()).withRel("estado"));
+	    }
 		
 		if (restaurante.ativacaoPermitida()) {
 			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
@@ -60,7 +65,12 @@ public class RestauranteDTOAssembler
 
 		if (restaurante.fechamentoPermitido()) {
 			restauranteDTO.add(algaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
-		} 
+		}
+		
+		restauranteDTO.add(algaLinks.linkToProdutos(restaurante.getId(), "produtos"));
+	    
+		restauranteDTO.getCozinha().add(algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
+		
 
 		return restauranteDTO;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.assembler.ProdutoDTOAssembler;
 import com.algaworks.algafood.api.assembler.ProdutoDTODisassembler;
 import com.algaworks.algafood.api.model.ProdutoDTO;
@@ -49,8 +51,13 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	@Autowired
 	private ProdutoDTODisassembler produtoDTODisassembler;
 	
+	@Autowired
+	private AlgaLinks algaLinks;
+	
 	@GetMapping
-	public List<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false) boolean incluirInativos) {
+	public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId, 
+			@RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
+		
 		Restaurante restaurante = cadastroRestaurante.findOrFail(restauranteId);
 		List<Produto> todosProdutos = null;
 		
@@ -60,14 +67,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 			todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
 		}
 		
-		return produtoDTOAssembler.toListProdutoDTO(todosProdutos); 
+		return produtoDTOAssembler.toCollectionModel(todosProdutos).add(algaLinks.linkToProdutos(restauranteId));
 	}
 	
 	@GetMapping("/{produtoId}")
 	public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProduto.findOrFail(restauranteId, produtoId);
 			
-		return produtoDTOAssembler.toProdutoDTO(produto);
+		return produtoDTOAssembler.toModel(produto);
 	}
 	
 	@PostMapping
@@ -80,7 +87,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		 
 		produto = cadastroProduto.salvar(produto);
 		
-		return produtoDTOAssembler.toProdutoDTO(produto);
+		return produtoDTOAssembler.toModel(produto);
 	}
 	
 	@PutMapping("/{produtoId}")
@@ -93,6 +100,6 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		
 		produtoAtual = cadastroProduto.salvar(produtoAtual);
 		
-		return produtoDTOAssembler.toProdutoDTO(produtoAtual);
+		return produtoDTOAssembler.toModel(produtoAtual);
 	}
 }

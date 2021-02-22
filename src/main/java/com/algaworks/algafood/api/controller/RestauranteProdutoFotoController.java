@@ -52,12 +52,12 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	
 	@Autowired
 	private FotoStorageService fotoStorage;
-		
+	
 	@GetMapping
 	public FotoProdutoDTO buscarDadosFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		FotoProduto fotoProduto = catalogoFotoProduto.findOrFail(restauranteId, produtoId);
 		
-		return fotoProdutoDTOAssembler.toFotoProdutoDTO(fotoProduto);
+		return fotoProdutoDTOAssembler.toModel(fotoProduto);
 	}
 	
 	@GetMapping(produces = MediaType.ALL_VALUE)
@@ -106,7 +106,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		
 		FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
 		
-		return fotoProdutoDTOAssembler.toFotoProdutoDTO(fotoSalva);
+		return fotoProdutoDTOAssembler.toModel(fotoSalva);
 	}
 	
 	@DeleteMapping
