@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -21,9 +24,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.model.CidadeDTO;
 import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.PedidoResumoDTO;
+import com.algaworks.algafood.api.openapi.model.CidadesDTOOpenApi;
 import com.algaworks.algafood.api.openapi.model.CozinhasDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -66,10 +72,13 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.ignoredParameterTypes(ServletWebRequest.class, File.class, 
 						InputStream.class, Resource.class, URL.class, URI.class, URLStreamHandler.class)
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 				.alternateTypeRules(AlternateTypeRules.newRule(
-						typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasDTOOpenApi.class))
+						typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhasDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesDTOOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(tags()[0], tags());
 	}
