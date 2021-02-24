@@ -26,12 +26,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.CidadeDTO;
 import com.algaworks.algafood.api.model.CozinhaDTO;
+import com.algaworks.algafood.api.model.EstadoDTO;
+import com.algaworks.algafood.api.model.FormaPagamentoDTO;
+import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.PedidoResumoDTO;
+import com.algaworks.algafood.api.model.PermissaoDTO;
 import com.algaworks.algafood.api.openapi.model.CidadesDTOOpenApi;
 import com.algaworks.algafood.api.openapi.model.CozinhasDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.EstadosDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.FormasPagamentoDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.GruposDTOOpenApi;
 import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.PermissoesDTOOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -79,6 +87,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class), FormasPagamentoDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesDTOOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(tags()[0], tags());
 	}
