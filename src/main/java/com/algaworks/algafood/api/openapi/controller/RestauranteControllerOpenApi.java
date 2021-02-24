@@ -34,6 +34,7 @@ public interface RestauranteControllerOpenApi {
 //	@JsonView(RestauranteView.Resumo.class)
 	CollectionModel<RestauranteBasicoDTO> listar();
 	
+	@ApiIgnore
 	@ApiOperation(value = "Lista os restaurantes", hidden = true)
 //	@JsonView(RestauranteView.ApenasNome.class)
 	CollectionModel<RestauranteApenasNomeDTO> listarApenasNome();

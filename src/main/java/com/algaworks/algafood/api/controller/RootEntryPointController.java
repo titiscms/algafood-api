@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.AlgaLinks;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -17,6 +19,7 @@ public class RootEntryPointController {
 	@Autowired
 	private AlgaLinks algaLinks;
 	
+	@ApiIgnore
 	@GetMapping
 	public RootEntryPointDTO getRootEntryPointDTO() {
 		RootEntryPointDTO rootEntryPointDTO = new RootEntryPointDTO();
