@@ -16,12 +16,12 @@ import lombok.Setter;
 @Getter
 public class PermissoesDTOOpenApi {
 
-	private PermissaoEmbeddedDTOOpenApi _embedded;
+	private PermissoesEmbeddedDTOOpenApi _embedded;
 	private Links _links;
 	
-	@ApiModel("PermissaoEmbeddedDTO")
+	@ApiModel("PermissoesEmbeddedDTO")
 	@Data
-	private class PermissaoEmbeddedDTOOpenApi {
+	private class PermissoesEmbeddedDTOOpenApi {
 		
 		private List<PermissaoDTO> permissoes;
 	}

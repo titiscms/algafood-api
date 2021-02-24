@@ -16,12 +16,12 @@ import lombok.Setter;
 @Getter
 public class FormasPagamentoDTOOpenApi {
 	
-	private FormaPagamentoEmbeddedDTOOpenApi _embedded;
+	private FormasPagamentoEmbeddedDTOOpenApi _embedded;
 	private Links _links;
 	
-	@ApiModel("FormaPagamentoEmbeddedDTO")
+	@ApiModel("FormasPagamentoEmbeddedDTO")
 	@Data
-	private class FormaPagamentoEmbeddedDTOOpenApi {
+	private class FormasPagamentoEmbeddedDTOOpenApi {
 		
 		private List<FormaPagamentoDTO> formasPagamento;
 	}

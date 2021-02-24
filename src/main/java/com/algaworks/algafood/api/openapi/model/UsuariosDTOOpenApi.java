@@ -4,26 +4,26 @@ import java.util.List;
 
 import org.springframework.hateoas.Links;
 
-import com.algaworks.algafood.api.model.GrupoDTO;
+import com.algaworks.algafood.api.model.UsuarioDTO;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("GruposDTO")
+@ApiModel("UsuariosDTO")
 @Setter
 @Getter
-public class GruposDTOOpenApi {
+public class UsuariosDTOOpenApi {
 
-	private GruposEmbeddedDTOOpenApi _embedded;
+	private UsuariosEmbeddedDTOOpenApi _embedded;
 	private Links _links;
 	
-	@ApiModel("GruposEmbeddedDTO")
+	@ApiModel("UsuariosEmbeddedDTO")
 	@Data
-	private class GruposEmbeddedDTOOpenApi {
+	private class UsuariosEmbeddedDTOOpenApi {
 		
-		private List<GrupoDTO> grupos;
+		private List<UsuarioDTO> usuarios;
 	}
 	
 }

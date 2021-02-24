@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
@@ -31,6 +30,9 @@ import com.algaworks.algafood.api.model.FormaPagamentoDTO;
 import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.PedidoResumoDTO;
 import com.algaworks.algafood.api.model.PermissaoDTO;
+import com.algaworks.algafood.api.model.ProdutoDTO;
+import com.algaworks.algafood.api.model.RestauranteBasicoDTO;
+import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.api.openapi.model.CidadesDTOOpenApi;
 import com.algaworks.algafood.api.openapi.model.CozinhasDTOOpenApi;
 import com.algaworks.algafood.api.openapi.model.EstadosDTOOpenApi;
@@ -40,6 +42,9 @@ import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
 import com.algaworks.algafood.api.openapi.model.PermissoesDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.ProdutosDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.RestaurantesBasicoDTOOpenApi;
+import com.algaworks.algafood.api.openapi.model.UsuariosDTOOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -84,7 +89,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhasDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
-						typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
+						typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
@@ -95,6 +100,12 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoDTOOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosDTOOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(tags()[0], tags());
 	}

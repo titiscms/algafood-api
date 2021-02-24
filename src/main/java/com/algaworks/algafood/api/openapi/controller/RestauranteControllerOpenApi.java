@@ -13,7 +13,6 @@ import com.algaworks.algafood.api.model.RestauranteApenasNomeDTO;
 import com.algaworks.algafood.api.model.RestauranteBasicoDTO;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteDTOInput;
-import com.algaworks.algafood.api.openapi.model.RestauranteResumoDTOOpenApi;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,7 +26,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = "Restaurantes")
 public interface RestauranteControllerOpenApi {
 
-	@ApiOperation(value = "Lista os restaurantes", response = RestauranteResumoDTOOpenApi.class)
+	@ApiOperation(value = "Lista os restaurantes")
 	@ApiImplicitParams({
 		@ApiImplicitParam(value = "Nome da projeção dos restaurantes", allowableValues = "apenas-nome",
 				name = "projecao", paramType = "query", type = "string")

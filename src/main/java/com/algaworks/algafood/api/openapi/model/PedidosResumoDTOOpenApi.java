@@ -1,10 +1,30 @@
 package com.algaworks.algafood.api.openapi.model;
 
-import com.algaworks.algafood.api.model.PedidoResumoDTO;
+import java.util.List;
+
+import org.springframework.hateoas.Links;
+
+import com.algaworks.algafood.api.model.PedidoDTO;
 
 import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @ApiModel("PedidosResumoDTO")
-public class PedidosResumoDTOOpenApi extends PagedModelOpenApi<PedidoResumoDTO>{
+@Setter
+@Getter
+public class PedidosResumoDTOOpenApi {
+	
+	private PedidosResumoEmbeddedDTOOpenApi _embedded;
+	private Links _links;
+	private PageModelOpenApi page;
+	
+	@ApiModel("PedidosEmbeddedDTO")
+	@Data
+	private class PedidosResumoEmbeddedDTOOpenApi {
+		
+		private List<PedidoDTO> pedidos;
+	}
 
 }

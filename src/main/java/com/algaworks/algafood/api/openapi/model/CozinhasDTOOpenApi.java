@@ -16,13 +16,13 @@ import lombok.Setter;
 @Getter
 public class CozinhasDTOOpenApi {
 
-	private CozinhaEmbeddedDTOOpenApi _embedded;
+	private CozinhasEmbeddedDTOOpenApi _embedded;
 	private Links _links;
 	private PageModelOpenApi page;
 	
-	@ApiModel("CozinhaEmbeddedDTO")
+	@ApiModel("CozinhasEmbeddedDTO")
 	@Data
-	private class CozinhaEmbeddedDTOOpenApi {
+	private class CozinhasEmbeddedDTOOpenApi {
 		
 		private List<CozinhaDTO> cozinhas;
 	}

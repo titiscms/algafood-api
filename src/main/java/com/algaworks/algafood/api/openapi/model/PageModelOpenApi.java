@@ -1,15 +1,13 @@
 package com.algaworks.algafood.api.openapi.model;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("PageDTO")
 @Setter
 @Getter
 public class PageModelOpenApi {
-	
+
 	@ApiModelProperty(example = "10", value = "Quantidade de registros por página")
 	private Long size;
 	
