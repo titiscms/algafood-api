@@ -3,10 +3,10 @@ package com.algaworks.algafood.api.openapi.controller;
 import org.springframework.hateoas.CollectionModel;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.api.model.input.UsuarioDTOInput;
 import com.algaworks.algafood.api.model.input.UsuarioDTOInputNomeEmail;
 import com.algaworks.algafood.api.model.input.UsuarioDTOInputSenha;
+import com.algaworks.algafood.api.v1.model.UsuarioDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

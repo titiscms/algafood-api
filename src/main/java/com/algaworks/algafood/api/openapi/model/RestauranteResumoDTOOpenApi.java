@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.openapi.model;
 
 import java.math.BigDecimal;
 
-import com.algaworks.algafood.api.model.CozinhaDTO;
+import com.algaworks.algafood.api.v1.model.CozinhaDTO;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

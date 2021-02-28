@@ -4,8 +4,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.input.CozinhaDTOInput;
+import com.algaworks.algafood.api.v1.model.CozinhaDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

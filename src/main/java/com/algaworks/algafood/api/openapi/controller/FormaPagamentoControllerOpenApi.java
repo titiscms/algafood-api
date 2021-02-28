@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.model.FormaPagamentoDTO;
 import com.algaworks.algafood.api.model.input.FormaPagamentoDTOInput;
 import com.algaworks.algafood.api.openapi.model.FormasPagamentoDTOOpenApi;
+import com.algaworks.algafood.api.v1.model.FormaPagamentoDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
