@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.input.UsuarioDTOInput;
-import com.algaworks.algafood.api.model.input.UsuarioDTOInputNomeEmail;
-import com.algaworks.algafood.api.model.input.UsuarioDTOInputSenha;
-import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.api.v1.assembler.UsuarioDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.UsuarioDTODisassembler;
 import com.algaworks.algafood.api.v1.model.UsuarioDTO;
+import com.algaworks.algafood.api.v1.model.input.UsuarioDTOInput;
+import com.algaworks.algafood.api.v1.model.input.UsuarioDTOInputNomeEmail;
+import com.algaworks.algafood.api.v1.model.input.UsuarioDTOInputSenha;
+import com.algaworks.algafood.api.v1.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;

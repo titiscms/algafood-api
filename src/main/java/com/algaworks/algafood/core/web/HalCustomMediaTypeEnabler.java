@@ -29,7 +29,7 @@ public class HalCustomMediaTypeEnabler {
                 
             	MappingJackson2HttpMessageConverter messageConverter = (MappingJackson2HttpMessageConverter) converter;
                 messageConverter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON, 
-                		AlgafoodMediaTypes.V1_APPLICATION_JSON));
+                		AlgafoodMediaTypes.V1_APPLICATION_JSON, AlgafoodMediaTypes.V2_APPLICATION_JSON));
             }
         }
     }

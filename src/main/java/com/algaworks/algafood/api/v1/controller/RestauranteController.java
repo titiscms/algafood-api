@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.input.RestauranteDTOInput;
-import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.api.v1.assembler.RestauranteApenasNomeDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.RestauranteBasicoDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.RestauranteDTOAssembler;
@@ -38,6 +36,8 @@ import com.algaworks.algafood.api.v1.assembler.RestauranteDTODisassembler;
 import com.algaworks.algafood.api.v1.model.RestauranteApenasNomeDTO;
 import com.algaworks.algafood.api.v1.model.RestauranteBasicoDTO;
 import com.algaworks.algafood.api.v1.model.RestauranteDTO;
+import com.algaworks.algafood.api.v1.model.input.RestauranteDTOInput;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.core.validation.ValidationException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;

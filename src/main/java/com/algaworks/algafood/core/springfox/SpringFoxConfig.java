@@ -23,18 +23,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.openapi.model.CidadesDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.CozinhasDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.EstadosDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.FormasPagamentoDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.GruposDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.PermissoesDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.ProdutosDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.RestaurantesBasicoDTOOpenApi;
-import com.algaworks.algafood.api.openapi.model.UsuariosDTOOpenApi;
 import com.algaworks.algafood.api.v1.model.CidadeDTO;
 import com.algaworks.algafood.api.v1.model.CozinhaDTO;
 import com.algaworks.algafood.api.v1.model.EstadoDTO;
@@ -45,6 +33,18 @@ import com.algaworks.algafood.api.v1.model.PermissaoDTO;
 import com.algaworks.algafood.api.v1.model.ProdutoDTO;
 import com.algaworks.algafood.api.v1.model.RestauranteBasicoDTO;
 import com.algaworks.algafood.api.v1.model.UsuarioDTO;
+import com.algaworks.algafood.api.v1.openapi.model.CidadesDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.CozinhasDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.EstadosDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.FormasPagamentoDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.GruposDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.LinksModelOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.PedidosResumoDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.PermissoesDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.ProdutosDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.RestaurantesBasicoDTOOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.UsuariosDTOOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;

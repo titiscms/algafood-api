@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
-import com.algaworks.algafood.api.model.input.FormaPagamentoDTOInput;
-import com.algaworks.algafood.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.api.v1.assembler.FormaPagamentoDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.FormaPagamentoDTODisassembler;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoDTO;
+import com.algaworks.algafood.api.v1.model.input.FormaPagamentoDTOInput;
+import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;

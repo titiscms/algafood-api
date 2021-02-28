@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.input.EstadoDTOInput;
-import com.algaworks.algafood.api.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.algafood.api.v1.assembler.EstadoDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.EstadoDTODisassembler;
 import com.algaworks.algafood.api.v1.model.EstadoDTO;
+import com.algaworks.algafood.api.v1.model.input.EstadoDTOInput;
+import com.algaworks.algafood.api.v1.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;

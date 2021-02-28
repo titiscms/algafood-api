@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.ResourceUriHelper;
-import com.algaworks.algafood.api.model.input.CidadeDTOInput;
-import com.algaworks.algafood.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.v1.assembler.CidadeDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.CidadeDTODisassembler;
 import com.algaworks.algafood.api.v1.model.CidadeDTO;
+import com.algaworks.algafood.api.v1.model.input.CidadeDTOInput;
+import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algafood.core.web.AlgafoodMediaTypes;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;

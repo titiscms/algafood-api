@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.input.ProdutoDTOInput;
-import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.ProdutoDTOAssembler;
 import com.algaworks.algafood.api.v1.assembler.ProdutoDTODisassembler;
 import com.algaworks.algafood.api.v1.model.ProdutoDTO;
+import com.algaworks.algafood.api.v1.model.input.ProdutoDTOInput;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
