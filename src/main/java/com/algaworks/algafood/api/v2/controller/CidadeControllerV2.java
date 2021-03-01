@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,6 @@ import com.algaworks.algafood.api.v2.assembler.CidadeDTOAssemblerV2;
 import com.algaworks.algafood.api.v2.assembler.CidadeDTODisassemblerV2;
 import com.algaworks.algafood.api.v2.model.CidadeDTOV2;
 import com.algaworks.algafood.api.v2.model.input.CidadeDTOInputV2;
-import com.algaworks.algafood.core.web.AlgafoodMediaTypes;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -30,7 +30,10 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 @RestController
-@RequestMapping(path = "/cidades", produces = AlgafoodMediaTypes.V2_APPLICATION_JSON_VALUE)
+//Configuração para versionamento da api por MediaType
+//@RequestMapping(path = "/cidades", produces = AlgafoodMediaTypes.V2_APPLICATION_JSON_VALUE)
+//Configuração para versionamento da api por URI
+@RequestMapping(path = "/v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeControllerV2 {
 
 	@Autowired
