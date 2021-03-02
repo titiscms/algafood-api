@@ -24,13 +24,14 @@ import com.algaworks.algafood.api.v2.assembler.CozinhaDTOAssemblerV2;
 import com.algaworks.algafood.api.v2.assembler.CozinhaDTODisassemblerV2;
 import com.algaworks.algafood.api.v2.model.CozinhaDTOV2;
 import com.algaworks.algafood.api.v2.model.input.CozinhaDTOInputV2;
+import com.algaworks.algafood.api.v2.openapi.controller.CozinhaControllerOpenApiV2;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
 @RestController
 @RequestMapping(path = "/v2/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CozinhaControllerV2 {
+public class CozinhaControllerV2 implements CozinhaControllerOpenApiV2 {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
@@ -47,6 +48,7 @@ public class CozinhaControllerV2 {
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+	@Override
 	@GetMapping
 	public PagedModel<CozinhaDTOV2> listar(@PageableDefault(size = 10) Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
@@ -56,6 +58,7 @@ public class CozinhaControllerV2 {
 		return cozinhasPagedModel;
 	}
 
+	@Override
 	@GetMapping("/{cozinhaId}")
 	public CozinhaDTOV2 buscar(@PathVariable(value = "cozinhaId") Long id) {
 		Cozinha cozinha = cadastroCozinha.findOrFail(id);
@@ -63,6 +66,7 @@ public class CozinhaControllerV2 {
 		return cozinhaDTOAssembler.toModel(cozinha);
 	}
 
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaDTOV2 adicionar(@RequestBody @Valid CozinhaDTOInputV2 cozinhaDTOInput) {
@@ -71,6 +75,7 @@ public class CozinhaControllerV2 {
 		return cozinhaDTOAssembler.toModel(cadastroCozinha.salvar(cozinha));		
 	}
 
+	@Override
 	@PutMapping("/{cozinhaId}")
 	public CozinhaDTOV2 atualizar(@PathVariable(value = "cozinhaId") Long id, 
 			@RequestBody @Valid CozinhaDTOInputV2 cozinhaDTOInput) {
@@ -82,6 +87,7 @@ public class CozinhaControllerV2 {
 		return cozinhaDTOAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
 	}
 	
+	@Override
 	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable(value = "cozinhaId") Long id) {

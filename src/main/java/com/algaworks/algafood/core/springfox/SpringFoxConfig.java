@@ -45,6 +45,10 @@ import com.algaworks.algafood.api.v1.openapi.model.PermissoesDTOOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.ProdutosDTOOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.RestaurantesBasicoDTOOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.UsuariosDTOOpenApi;
+import com.algaworks.algafood.api.v2.model.CidadeDTOV2;
+import com.algaworks.algafood.api.v2.model.CozinhaDTOV2;
+import com.algaworks.algafood.api.v2.openapi.model.CidadesDTOOpenApiV2;
+import com.algaworks.algafood.api.v2.openapi.model.CozinhasDTOOpenApiV2;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -68,13 +72,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SpringFoxConfig implements WebMvcConfigurer {
 
 	@Bean
-	public Docket apiDocket() {
+	public Docket apiDocketV1() {
 		TypeResolver typeResolver = new TypeResolver();
 		
 		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V1")
 				.select()
 					.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-					.paths(PathSelectors.any())
+					.paths(PathSelectors.ant("/v1/**"))
 					.build()
 				.useDefaultResponseMessages(false)
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
@@ -106,8 +111,52 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoDTOOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosDTOOpenApi.class))
-				.apiInfo(apiInfo())
-				.tags(tags()[0], tags());
+				.apiInfo(apiInfoV1())
+				.tags(tagsV1()[0], tagsV1());
+	}
+	
+	@Bean
+	public Docket apiDocketV2() {
+		TypeResolver typeResolver = new TypeResolver();
+		
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V2")
+				.select()
+					.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+					.paths(PathSelectors.ant("/v2/**"))
+					.build()
+				.useDefaultResponseMessages(false)
+				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
+				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
+				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
+				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
+				.additionalModels(typeResolver.resolve(Problem.class))
+				.ignoredParameterTypes(ServletWebRequest.class, File.class, 
+						InputStream.class, Resource.class, URL.class, URI.class, URLStreamHandler.class)
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(PagedModel.class, CozinhaDTOV2.class), CozinhasDTOOpenApiV2.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, CidadeDTOV2.class), CidadesDTOOpenApiV2.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class), FormasPagamentoDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoDTOOpenApi.class))
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosDTOOpenApi.class))
+				.apiInfo(apiInfoV2())
+				.tags(tagsV2()[0], tagsV2());
 	}
 	
 	private List<ResponseMessage> globalGetResponseMessages() {
@@ -187,7 +236,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 			);
 	}
 	
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
 				.title("Algafood API")
 				.description("API aberta para clientes e restaurantes")
@@ -195,6 +244,16 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.contact(new Contact("Thiago Costa", "http://github.com/titiscms", "titisbackup@gmail.com"))
 				.build();
 	}
+	
+	private ApiInfo apiInfoV2() {
+		return new ApiInfoBuilder()
+				.title("Algafood API")
+				.description("API atualizada e otmizada para clientes e restaurantes")
+				.version("2.0")
+				.contact(new Contact("Thiago Costa", "http://github.com/titiscms", "titisbackup@gmail.com"))
+				.build();
+	}
+	
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -205,7 +264,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 			.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 	
-	private Tag[] tags() {
+	private Tag[] tagsV1() {
 		return new Tag[] {
 			new Tag("Cidades", "Gerencia as cidades"),
 			new Tag("Cozinhas", "Gerencia as cozinhas"),
@@ -220,4 +279,21 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 			new Tag("Permissões", "Gerencia as permissões")
 		};
 	}
+	
+	private Tag[] tagsV2() {
+		return new Tag[] {
+			new Tag("Cidades", "Gerencia as cidades"),
+			new Tag("Cozinhas", "Gerencia as cozinhas"),
+//			new Tag("Grupos", "Gerencia os grupos de usuários"),
+//			new Tag("FormasPagamento", "Gerencia as formas de pagamento"),
+//			new Tag("Pedidos", "Gerencia os pedidos"),
+//			new Tag("Restaurantes", "Gerencia os restaurantes"),
+//			new Tag("Estados", "Gerencia os estados"),
+//			new Tag("Produtos", "Gerencia os produtos de restaurantes"),
+//			new Tag("Usuários", "Gerencia os usuários"),
+//			new Tag("Estatísticas", "Estatísticas da AlgaFood"),
+//			new Tag("Permissões", "Gerencia as permissões")
+		};
+	}
+	
 }

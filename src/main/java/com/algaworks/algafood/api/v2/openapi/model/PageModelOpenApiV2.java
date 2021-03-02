@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.v1.openapi.model;
+package com.algaworks.algafood.api.v2.openapi.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @ApiModel("PagedModel")
 @Setter
 @Getter
-public class PageModelOpenApi {
+public class PageModelOpenApiV2 {
 
 	@ApiModelProperty(example = "10", value = "Quantidade de registros por página")
 	private Long size;

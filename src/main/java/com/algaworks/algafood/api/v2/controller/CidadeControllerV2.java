@@ -23,6 +23,7 @@ import com.algaworks.algafood.api.v2.assembler.CidadeDTOAssemblerV2;
 import com.algaworks.algafood.api.v2.assembler.CidadeDTODisassemblerV2;
 import com.algaworks.algafood.api.v2.model.CidadeDTOV2;
 import com.algaworks.algafood.api.v2.model.input.CidadeDTOInputV2;
+import com.algaworks.algafood.api.v2.openapi.controller.CidadeControllerOpenApiV2;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -34,7 +35,7 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 //@RequestMapping(path = "/cidades", produces = AlgafoodMediaTypes.V2_APPLICATION_JSON_VALUE)
 //Configuração para versionamento da api por URI
 @RequestMapping(path = "/v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeControllerV2 {
+public class CidadeControllerV2 implements CidadeControllerOpenApiV2 {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -48,6 +49,7 @@ public class CidadeControllerV2 {
 	@Autowired
 	private CidadeDTODisassemblerV2 cidadeDTODisassembler;
 	
+	@Override
 	@GetMapping
 	public CollectionModel<CidadeDTOV2> listar() {
 		List<Cidade> cidades = cidadeRepository.findAll();
@@ -55,6 +57,7 @@ public class CidadeControllerV2 {
 		return cidadeDTOAssembler.toCollectionModel(cidades);
 	}
 	
+	@Override
 	@GetMapping("/{cidadeId}")
 	public CidadeDTOV2 buscar(@PathVariable(value = "cidadeId") Long id) {
 		Cidade cidade = cadastroCidade.findOrFail(id);
@@ -62,6 +65,7 @@ public class CidadeControllerV2 {
 		return cidadeDTOAssembler.toModel(cidade);
 	}
 	
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeDTOV2 adicionar(@RequestBody @Valid CidadeDTOInputV2 cidadeDTOInput) {
@@ -78,6 +82,7 @@ public class CidadeControllerV2 {
 		}	
 	}
 	
+	@Override
 	@PutMapping("/{cidadeId}")
 	public CidadeDTOV2 atualizar(@PathVariable(value = "cidadeId") Long id,
 			@RequestBody @Valid CidadeDTOInputV2 cidadeDTOInput) {
@@ -93,6 +98,7 @@ public class CidadeControllerV2 {
 		}
 	}
 	
+	@Override
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable(value = "cidadeId") Long id) {
