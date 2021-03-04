@@ -49,7 +49,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CidadeDTODisassembler cidadeDTODisassembler;
 	
-	@Deprecated
+//	@Deprecated - método fica depreciado na documentação
 	@Override
 	@GetMapping
 	public CollectionModel<CidadeDTO> listar() {
@@ -58,7 +58,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return cidadeDTOAssembler.toCollectionModel(cidades);
 	}
 	
-	@Deprecated
+//	@Deprecated - método fica depreciado na documentação
 	@Override
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable(value = "cidadeId") Long id) {
@@ -67,7 +67,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return cidadeDTOAssembler.toModel(cidade);
 	}
 	
-	@Deprecated
+//	@Deprecated - método fica depreciado na documentação
 	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -85,7 +85,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}	
 	}
 	
-	@Deprecated
+//	@Deprecated - método fica depreciado na documentação
 	@Override
 	@PutMapping("/{cidadeId}")
 	public CidadeDTO atualizar(@PathVariable(value = "cidadeId") Long id,
@@ -102,7 +102,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}
 	}
 	
-	@Deprecated
+//	@Deprecated - método fica depreciado na documentação
 	@Override
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
