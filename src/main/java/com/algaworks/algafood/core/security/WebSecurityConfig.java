@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /*
  * Deixando de usar para transformar a aplicação num ResourceServer
  */
+
 //@Configuration
 //@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
