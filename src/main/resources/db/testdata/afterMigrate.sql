@@ -76,13 +76,13 @@ INSERT INTO grupo (id, nome) VALUES (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secret
 
 INSERT INTO grupo_permissao (grupo_id, permissao_id) VALUES (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (3, 'José Souza', 'jose.aux@algafood.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (4, 'Ana Martins', 'ana.aux@algafood.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (6, 'Débora Mendonça', 'testemail.dev13+debora@gmail.com', '123', UTC_TIMESTAMP);
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (7, 'Carlos Lima', 'testemail.dev13+carlos@gmail.com', '123', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (3, 'José Souza', 'jose.aux@algafood.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (4, 'Ana Martins', 'ana.aux@algafood.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (6, 'Débora Mendonça', 'testemail.dev13+debora@gmail.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (7, 'Carlos Lima', 'testemail.dev13+carlos@gmail.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
 
 INSERT INTO usuario_grupo (usuario_id, grupo_id) VALUES (1, 1), (1, 2), (2, 2);
 

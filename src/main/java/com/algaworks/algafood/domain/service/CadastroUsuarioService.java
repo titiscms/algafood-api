@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,9 @@ public class CadastroUsuarioService {
 	@Autowired
 	private CadastroGrupoService cadastroGrupo;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		usuarioRepository.detach(usuario);
@@ -34,6 +38,10 @@ public class CadastroUsuarioService {
 		
 		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
 			throw new NegocioException(String.format("Já existe um usuário cadastrado com o email %s", usuario.getEmail()));
+		}
+		
+		if (usuario.isNovo()) {
+			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 		}
 		
 		return usuarioRepository.save(usuario);
@@ -56,12 +64,12 @@ public class CadastroUsuarioService {
 	@Transactional
 	public void alterarSenha(Long id, String senhaAntiga, String senhaNova) {
 		Usuario usuario = findOrFail(id);
-		
-		if (usuario.senhaIsNotEqual(senhaAntiga)) {
+
+		if (!passwordEncoder.matches(senhaAntiga, usuario.getSenha())) {
 			throw new NegocioException("Senha atual não coincide com a senha do usuário.");
 		}
 		
-		usuario.setSenha(senhaNova);
+		usuario.setSenha(passwordEncoder.encode(senhaNova));
 	}
 	
 	@Transactional
@@ -83,4 +91,5 @@ public class CadastroUsuarioService {
 	public Usuario findOrFail(Long id) {
 		return usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id));
 	}
+	
 }
