@@ -115,7 +115,7 @@ INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (5, 'Manoel L
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (6, 'Débora Mendonça', 'testemail.dev13+debora@gmail.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES (7, 'Carlos Lima', 'testemail.dev13+carlos@gmail.com', '$2y$12$JBZ9gUyKPAYvHc0zdqY4Hef36k822L9o9nfD7E9D0O6ZBGUVDg0zW', UTC_TIMESTAMP);
 
-INSERT INTO usuario_grupo (usuario_id, grupo_id) VALUES (1, 1), (1, 2), (2, 2);
+INSERT INTO usuario_grupo (usuario_id, grupo_id) VALUES (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 INSERT INTO restaurante_usuario_responsavel (restaurante_id, usuario_id) VALUES (1, 5), (3, 5);
 
