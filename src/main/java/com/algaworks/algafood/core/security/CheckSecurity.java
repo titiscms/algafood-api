@@ -23,5 +23,19 @@ public @interface CheckSecurity {
 		public @interface PodeConsultar { }
 		
 	}
+	
+	public @interface Restaurantes {
+		
+		@PreAuthorize("hasAuthority('EDITAR_RESTAURANTES') and hasAuthority('SCOPE_WRITE')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar { }
+		
+		@PreAuthorize("isAuthenticated() and hasAuthority('SCOPE_READ')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar { }
+		
+	}
 
 }

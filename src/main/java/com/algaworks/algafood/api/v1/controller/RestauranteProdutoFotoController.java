@@ -27,6 +27,7 @@ import com.algaworks.algafood.api.v1.assembler.FotoProdutoDTOAssembler;
 import com.algaworks.algafood.api.v1.model.FotoProdutoDTO;
 import com.algaworks.algafood.api.v1.model.input.FotoProdutoDTOInput;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
@@ -53,6 +54,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoStorageService fotoStorage;
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public FotoProdutoDTO buscarDadosFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		FotoProduto fotoProduto = catalogoFotoProduto.findOrFail(restauranteId, produtoId);
@@ -60,6 +62,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoDTOAssembler.toModel(fotoProduto);
 	}
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping(produces = MediaType.ALL_VALUE)
 	public ResponseEntity<?> buscarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
@@ -89,6 +92,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		}
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@Valid FotoProdutoDTOInput fotoProdutoDTOInput, @RequestPart(required = true) MultipartFile arquivo) throws IOException {
@@ -109,6 +113,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoDTOAssembler.toModel(fotoSalva);
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
