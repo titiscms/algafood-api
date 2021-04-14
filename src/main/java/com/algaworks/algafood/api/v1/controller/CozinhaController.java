@@ -10,6 +10,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +60,11 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@GetMapping
 	public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
 		log.info("CozinhaController ::: listar() ::: inicio total por pagina {}, pagina {}." , pageable.getPageSize(), pageable.getPageNumber());
+		
+		/*
+		 * Imprimindo as authorities para debug
+		 */
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		
