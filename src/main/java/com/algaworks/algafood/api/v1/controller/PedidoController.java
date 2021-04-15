@@ -28,6 +28,7 @@ import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
@@ -63,6 +64,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 	@Autowired
 	private AlgaSecurity algaSecurity;
 	
+	@Override
 	@GetMapping
 	public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -76,6 +78,8 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pedidosPagedModel;
 	}
 	
+	@CheckSecurity.Pedidos.PodeBuscar
+	@Override
 	@GetMapping("/{codigoPedido}")
 	public PedidoDTO buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.findOrFail(codigoPedido);
@@ -83,6 +87,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pedidoDTOAssembler.toModel(pedido);
 	}
 	
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoDTO adicionar(@RequestBody @Valid PedidoDTOInput pedidoDTOInput) {

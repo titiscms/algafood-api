@@ -28,9 +28,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			/*
 			 * configuração para não manter a sessão.
 			 */
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			
-		.and()	
+			//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		
 			.csrf().disable()
 			.cors()
 			
