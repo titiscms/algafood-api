@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.repository.PedidoRespository;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 
 @Service
 public class FluxoPedidoService {
@@ -14,7 +14,7 @@ public class FluxoPedidoService {
 	private EmissaoPedidoService emissaoPedido;
 	
 	@Autowired
-	private PedidoRespository pedidoRepository;
+	private PedidoRepository pedidoRepository;
 	
 	@Transactional
 	public void confirmar(String codigoPedido) {

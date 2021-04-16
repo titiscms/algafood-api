@@ -34,7 +34,7 @@ import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
-import com.algaworks.algafood.domain.repository.PedidoRespository;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import com.google.common.collect.ImmutableMap;
@@ -44,7 +44,7 @@ import com.google.common.collect.ImmutableMap;
 public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired
-	private PedidoRespository pedidoRepository;
+	private PedidoRepository pedidoRepository;
 	
 	@Autowired
 	private EmissaoPedidoService emissaoPedido;
@@ -64,6 +64,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 	@Autowired
 	private AlgaSecurity algaSecurity;
 	
+	@CheckSecurity.Pedidos.PodePesquisar
 	@Override
 	@GetMapping
 	public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
@@ -87,6 +88,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pedidoDTOAssembler.toModel(pedido);
 	}
 	
+	@CheckSecurity.Pedidos.PodeCriar
 	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

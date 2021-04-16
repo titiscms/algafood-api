@@ -12,13 +12,13 @@ import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.Usuario;
-import com.algaworks.algafood.domain.repository.PedidoRespository;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 
 @Service
 public class EmissaoPedidoService {
 
 	@Autowired
-	private PedidoRespository pedidoRepository;
+	private PedidoRepository pedidoRepository;
 	
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
