@@ -29,6 +29,7 @@ import com.algaworks.algafood.api.v1.assembler.FormaPagamentoDTODisassembler;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoDTO;
 import com.algaworks.algafood.api.v1.model.input.FormaPagamentoDTOInput;
 import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
@@ -49,6 +50,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	@Autowired
 	private FormaPagamentoDTODisassembler formaPagamentoDTODisassembler;
 	
+	@CheckSecurity.FormasPagamento.PodeConsultar
+	@Override
 	@GetMapping
 	public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -77,6 +80,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 				.body(formasPagamentoDTO);
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeConsultar
+	@Override
 	@GetMapping("/{FormaPagamentoId}")
 	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable("FormaPagamentoId") Long id, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -105,6 +110,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 				.body(formaPagamentoDTO);
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeEditar
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoDTOInput formaPagamentoDTOInput) {
@@ -113,6 +120,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		return formaPagamentoDTOAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamento));
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeEditar
+	@Override
 	@PutMapping("/{FormaPagamentoId}")
 	public FormaPagamentoDTO atualizar(@PathVariable("FormaPagamentoId") Long id, @RequestBody @Valid FormaPagamentoDTOInput formaPagamentoDTOInput) {
 		FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.findOrFail(id);
@@ -122,9 +131,12 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		return formaPagamentoDTOAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamentoAtual));
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeEditar
+	@Override
 	@DeleteMapping("/{FormaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable("FormaPagamentoId") Long id) {
 		cadastroFormaPagamento.remover(id);
 	}
+	
 }
