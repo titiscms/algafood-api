@@ -15,7 +15,7 @@ DELETE FROM usuario_grupo;
 DELETE FROM restaurante_usuario_responsavel;
 DELETE FROM pedido;
 DELETE FROM item_pedido;
-DELETE FROM foto_produto;
+DELETE FROM oauth_client_details;
 
 SET foreign_key_checks = 1;
 
@@ -119,7 +119,7 @@ INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, 
 INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, subtotal, taxa_frete, valor_total) VALUES (2, 'af8b5ca4-5248-468f-9818-13924b83755a', 4, 6, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIADO', UTC_TIMESTAMP, 79, 0, 79);
 INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao) VALUES (3, 2, 6, 1, 79, 79, 'Ao ponto');
 
-INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total) VALUES (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 7, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil', 'ENTREGUE', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
+INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total) VALUES (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 7, 1, 1, '38400-222', 'Rua Natal', '200', NULL, 'Brasil', 'ENTREGUE', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
 INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao) VALUES (4, 3, 2, 1, 110, 110, NULL);
 
 INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total) VALUES (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 7, 1, 1, '38400-800', 'Rua Fortaleza', '900', 'Apto 504', 'Centro', 'ENTREGUE', '2019-11-02 20:34:04', '2019-11-02 20:35:10', '2019-11-02 21:10:32', 174.4, 5, 179.4);
@@ -127,3 +127,12 @@ INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, 
 
 INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total) VALUES (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua 10', '930', 'Casa 20', 'Martins', 'ENTREGUE', '2019-11-03 02:00:30', '2019-11-03 02:01:21', '2019-11-03 02:20:10', 87.2, 10, 97.2);
 INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao) VALUES (6, 5, 3, 1, 87.2, 87.2, NULL);
+
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('algafood-web', NULL, '$2y$12$yT76bKkcMaL0Ib4XX/1V1OReOcpoywmhdh.ezVFIfyEecyd7j5ec2', 'READ,WRITE', 'password,refresh_token', NULL, NULL, 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('faturamento', NULL, '$2y$12$wlTJcy2sowIEirrGPteuI.JXTI7d6HK9UIggTwh7eGQFXJZ0RYRIO', 'READ,WRITE', 'client_credentials', NULL, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS', 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('foodanalyticssimple', NULL, '$2y$12$l6otrAwxmmilWjt6w.TfZecEGYYeFRNXsQoIILzAkZISBB40OSDJK', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', NULL, NULL, NULL, NULL, NULL );
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('foodanalytics', NULL, '', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', NULL, NULL, NULL, NULL, NULL );
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('logistica', NULL, NULL, 'READ,WRITE', 'implicit', 'http://www.foodlogistics.local:8082', NULL, NULL, NULL, NULL, NULL );
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('algafood-mobile', NULL, '$2y$12$hrQ9HLh0NX.7DaGyHgW4jesjGdSKGTmpV9SeTwCm3.UxpqUi3kWTi', 'READ,WRITE', 'password', NULL, NULL, 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
+
+
