@@ -23,6 +23,7 @@ import com.algaworks.algafood.api.v1.assembler.EstadoDTODisassembler;
 import com.algaworks.algafood.api.v1.model.EstadoDTO;
 import com.algaworks.algafood.api.v1.model.input.EstadoDTOInput;
 import com.algaworks.algafood.api.v1.openapi.controller.EstadoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
@@ -43,6 +44,8 @@ public class EstadoController implements EstadoControllerOpenApi {
 	@Autowired
 	private EstadoDTODisassembler estadoDTODisassembler;
 	
+	@CheckSecurity.Estados.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<EstadoDTO> listar() {
 		List<Estado> estados = estadoRepository.findAll();
@@ -50,11 +53,15 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoDTOAssembler.toCollectionModel(estados);
 	}
 	
+	@CheckSecurity.Estados.PodeConsultar
+	@Override
 	@GetMapping("/{estadoId}")
 	public EstadoDTO buscar(@PathVariable(value = "estadoId") Long id) {
 		return estadoDTOAssembler.toModel(cadastroEstado.findOrFail(id));
 	}
 	
+	@CheckSecurity.Estados.PodeEditar
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoDTO adicionar(@RequestBody @Valid EstadoDTOInput estadoDTOInput) {
@@ -63,6 +70,8 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoDTOAssembler.toModel(cadastroEstado.salvar(estado));
 	}
 	
+	@CheckSecurity.Estados.PodeEditar
+	@Override
 	@PutMapping("/{estadoId}")
 	public EstadoDTO atualizar(@PathVariable(value = "estadoId") Long id, @RequestBody @Valid EstadoDTOInput estadoDTOInput) {
 		Estado estadoAtual = cadastroEstado.findOrFail(id);
@@ -72,9 +81,12 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoDTOAssembler.toModel(cadastroEstado.salvar(estadoAtual));
 	}
 	
+	@CheckSecurity.Estados.PodeEditar
+	@Override
 	@DeleteMapping("/{estadoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable(value = "estadoId") Long id) {
 		cadastroEstado.remover(id);	
 	}
+	
 }

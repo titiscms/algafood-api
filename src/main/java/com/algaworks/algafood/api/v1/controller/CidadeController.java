@@ -24,6 +24,7 @@ import com.algaworks.algafood.api.v1.assembler.CidadeDTODisassembler;
 import com.algaworks.algafood.api.v1.model.CidadeDTO;
 import com.algaworks.algafood.api.v1.model.input.CidadeDTOInput;
 import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -50,6 +51,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeDTODisassembler cidadeDTODisassembler;
 	
 //	@Deprecated - método fica depreciado na documentação
+	@CheckSecurity.Cidades.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<CidadeDTO> listar() {
@@ -59,6 +61,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	}
 	
 //	@Deprecated - método fica depreciado na documentação
+	@CheckSecurity.Cidades.PodeConsultar
 	@Override
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable(value = "cidadeId") Long id) {
@@ -68,6 +71,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	}
 	
 //	@Deprecated - método fica depreciado na documentação
+	@CheckSecurity.Cidades.PodeEditar
 	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -86,6 +90,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	}
 	
 //	@Deprecated - método fica depreciado na documentação
+	@CheckSecurity.Cidades.PodeEditar
 	@Override
 	@PutMapping("/{cidadeId}")
 	public CidadeDTO atualizar(@PathVariable(value = "cidadeId") Long id,
@@ -103,6 +108,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	}
 	
 //	@Deprecated - método fica depreciado na documentação
+	@CheckSecurity.Cidades.PodeEditar
 	@Override
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
