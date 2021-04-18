@@ -37,6 +37,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 	private AlgaLinks algaLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.findOrFail(restauranteId);
@@ -56,6 +57,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
+	@Override
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -65,6 +67,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
+	@Override
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -72,4 +75,5 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 		
 		return ResponseEntity.noContent().build();
 	}
+	
 }

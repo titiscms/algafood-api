@@ -25,6 +25,7 @@ import com.algaworks.algafood.api.v1.model.input.UsuarioDTOInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioDTOInputNomeEmail;
 import com.algaworks.algafood.api.v1.model.input.UsuarioDTOInputSenha;
 import com.algaworks.algafood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
@@ -45,6 +46,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	@Autowired
 	private UsuarioDTODisassembler usuarioDTODisassembler;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<UsuarioDTO> listar() {
 		List<Usuario> usuarios = usuarioRepository.findAll();
@@ -52,6 +55,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toCollectionModel(usuarios);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+	@Override
 	@GetMapping("/{usuarioId}")
 	public UsuarioDTO buscar(@PathVariable(value = "usuarioId") Long id) {
 		Usuario usuario = cadastroUsuario.findOrFail(id);
@@ -59,6 +64,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toModel(usuario);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioDTOInput usuarioDTOInput) {
@@ -67,6 +74,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toModel(cadastroUsuario.salvar(usuario));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
+	@Override
 	@PutMapping("/{usuarioId}")
 	public UsuarioDTO atualizar(@PathVariable(value = "usuarioId") Long id, 
 			@RequestBody @Valid UsuarioDTOInputNomeEmail usuarioDTOInputNomeEmail) {
@@ -78,12 +87,16 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+	@Override
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable(value = "usuarioId") Long id) {
 		cadastroUsuario.remover(id);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
+	@Override
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarSenha(@PathVariable(value = "usuarioId") Long id, 
@@ -91,4 +104,5 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		
 		cadastroUsuario.alterarSenha(id, usuarioDTOInputSenha.getSenhaAtual(), usuarioDTOInputSenha.getNovaSenha());
 	}
+	
 }

@@ -37,6 +37,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	private AlgaLinks algaLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.findOrFail(restauranteId);
@@ -56,6 +57,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@DeleteMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
@@ -65,6 +67,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@PutMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
@@ -72,4 +75,5 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 		
 		return ResponseEntity.noContent().build();
 	}
+	
 }

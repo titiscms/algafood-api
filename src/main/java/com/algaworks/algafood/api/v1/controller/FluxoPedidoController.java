@@ -43,4 +43,5 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 	public void entregar(@PathVariable String codigoPedido) {
 		fluxoPedido.entregar(codigoPedido);
 	}
+	
 }

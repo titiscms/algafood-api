@@ -63,6 +63,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	}
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping(produces = MediaType.ALL_VALUE)
 	public ResponseEntity<?> buscarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
@@ -93,6 +94,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	}
 
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@Valid FotoProdutoDTOInput fotoProdutoDTOInput, @RequestPart(required = true) MultipartFile arquivo) throws IOException {
@@ -114,6 +116,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
@@ -130,4 +133,5 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
 		}
 	}
+	
 }

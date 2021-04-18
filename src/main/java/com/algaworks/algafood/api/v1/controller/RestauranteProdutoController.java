@@ -56,6 +56,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	private AlgaLinks algaLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId, 
 			@RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
@@ -73,6 +74,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	}
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping("/{produtoId}")
 	public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProduto.findOrFail(restauranteId, produtoId);
@@ -81,6 +83,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoDTO adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoDTOInput produtoDTOInput) {
@@ -95,6 +98,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@PutMapping("/{produtoId}")
 	public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@RequestBody @Valid ProdutoDTOInput produtoDTOInput) {

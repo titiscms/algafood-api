@@ -54,4 +54,14 @@ public class AlgaSecurity {
 		return pedidoRepository.isPedidoGerenciadoPor(codigoPedido, getUsuarioId());
 	}
 	
+	public boolean ehUsuarioAutenticado(Long usuarioId) {
+		log.info("AlgaSecurity :: ehUsuarioAutenticado(Long usuarioId) :: -> " + usuarioId);
+		
+		if (usuarioId != null && usuarioId.equals(getUsuarioId())) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
