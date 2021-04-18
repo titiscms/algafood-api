@@ -57,7 +57,7 @@ public class AlgaSecurity {
 	public boolean ehUsuarioAutenticado(Long usuarioId) {
 		log.info("AlgaSecurity :: ehUsuarioAutenticado(Long usuarioId) :: -> " + usuarioId);
 		
-		if (usuarioId != null && usuarioId.equals(getUsuarioId())) {
+		if (getUsuarioId() != null && usuarioId != null && usuarioId.equals(getUsuarioId())) {
 			return true;
 		}
 		
