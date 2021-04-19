@@ -22,7 +22,7 @@ import com.algaworks.algafood.domain.service.VendaReportService;
 
 @RestController
 @RequestMapping(path = "/v1/estatisticas")
-public class EstatisticaController implements EstatisticaControllerOpenApi {
+public class EstatisticasController implements EstatisticaControllerOpenApi {
 
 	@Autowired
 	private VendaQueryService vendaQueryService;

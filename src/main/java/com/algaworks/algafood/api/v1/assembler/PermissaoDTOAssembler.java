@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.controller.GrupoPermissaoController;
 import com.algaworks.algafood.api.v1.model.PermissaoDTO;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Permissao;
 
 @Component
@@ -19,6 +20,9 @@ public class PermissaoDTOAssembler extends RepresentationModelAssemblerSupport<P
 	
 	@Autowired
 	private AlgaLinks algaLinks;
+	
+	@Autowired
+	private AlgaSecurity algaSecurity;
 	
 	public PermissaoDTOAssembler() {
 		super(GrupoPermissaoController.class, PermissaoDTO.class);
@@ -33,7 +37,13 @@ public class PermissaoDTOAssembler extends RepresentationModelAssemblerSupport<P
 	
 	@Override
 	public CollectionModel<PermissaoDTO> toCollectionModel(Iterable<? extends Permissao> permissões) {
-		return super.toCollectionModel(permissões).add(algaLinks.linkToPermissoes());
+		CollectionModel<PermissaoDTO> permissoesDTO = super.toCollectionModel(permissões);
+		
+		if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			permissoesDTO.add(algaLinks.linkToPermissoes());
+		}
+
+		return permissoesDTO; 
 	}
 	
 }

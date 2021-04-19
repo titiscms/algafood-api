@@ -10,6 +10,7 @@ import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.controller.RestauranteController;
 import com.algaworks.algafood.api.v1.model.RestauranteDTO;
 import com.algaworks.algafood.api.v1.model.input.RestauranteDTOInput;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 
 @Component
@@ -22,6 +23,9 @@ public class RestauranteDTOAssembler
 	@Autowired
 	private AlgaLinks algaLinks;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
 	public RestauranteDTOAssembler() {
 		super(RestauranteController.class, RestauranteDTO.class);
 	}
@@ -32,52 +36,79 @@ public class RestauranteDTOAssembler
 		
 		modelMapper.map(restaurante, restauranteDTO);
 		
-		restauranteDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
-		
-		restauranteDTO.getCozinha().add(algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
-		        
-		restauranteDTO.add(algaLinks.linkToRestauranteFormasPagamento(restaurante.getId(), "formas-pagamento"));
-        
-		restauranteDTO.add(algaLinks.linkToRestauranteResponsaveis(restaurante.getId(), "responsaveis"));
-		
-		if (restauranteDTO.getEndereco() != null 
-	            && restauranteDTO.getEndereco().getCidade() != null
-	            && restauranteDTO.getEndereco().getEstado() != null) {
-			
-			restauranteDTO.getEndereco().add(algaLinks.linkToCidade(
-					restaurante.getEndereco().getCidade().getId()).withRel("cidade"));
-			
-			restauranteDTO.getEndereco().add(algaLinks.linkToEstado(
-					restaurante.getEndereco().getCidade().getEstado().getId()).withRel("estado"));
-	    }
-		
-		if (restaurante.ativacaoPermitida()) {
-			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
-		} 
-		
-		if (restaurante.inativacaoPermitida()) {
-			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "inativar"));
-		} 
-		
-		if (restaurante.aberturaPermitida()) {
-			restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "abrir"));
-		} 
-
-		if (restaurante.fechamentoPermitido()) {
-			restauranteDTO.add(algaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			restauranteDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
 		}
 		
-		restauranteDTO.add(algaLinks.linkToProdutos(restaurante.getId(), "produtos"));
-	    
-		restauranteDTO.getCozinha().add(algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
+		if (algaSecurity.podeGerenciarFuncionamentoRestaurantes(restaurante.getId())) {
+			
+			if (restaurante.aberturaPermitida()) {
+				restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "abrir"));
+			}
+			
+			if (restaurante.fechamentoPermitido()) {
+				restauranteDTO.add(algaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+			}
+			
+		}
 		
-
+		if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+			
+			if (restaurante.ativacaoPermitida()) {
+				restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+			}
+			
+			if (restaurante.inativacaoPermitida()) {
+				restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "inativar"));
+			}
+			
+		}
+		
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			restauranteDTO.add(algaLinks.linkToRestauranteFormasPagamento(restaurante.getId(), "formas-pagamento"));
+		}
+        
+		if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+			restauranteDTO.add(algaLinks.linkToRestauranteResponsaveis(restaurante.getId(), "responsaveis"));
+		}
+		
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			restauranteDTO.add(algaLinks.linkToProdutos(restaurante.getId(), "produtos"));
+		}
+		
+		if (algaSecurity.podeConsultarCozinhas()) {
+			restauranteDTO.getCozinha().add(algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
+		}
+		
+		if (algaSecurity.podeConsultarCidades() && algaSecurity.podeConsultarEstados()) {
+			
+			if (restauranteDTO.getEndereco() != null 
+					&& restauranteDTO.getEndereco().getCidade() != null
+					&& restauranteDTO.getEndereco().getEstado() != null) {
+				
+				restauranteDTO.getEndereco().add(algaLinks.linkToCidade(
+						restaurante.getEndereco().getCidade().getId()).withRel("cidade"));
+				
+				restauranteDTO.getEndereco().add(algaLinks.linkToEstado(
+						restaurante.getEndereco().getCidade().getEstado().getId()).withRel("estado"));
+				
+			}
+			
+		}
+		
 		return restauranteDTO;
 	}
 	
 	@Override
 	public CollectionModel<RestauranteDTO> toCollectionModel(Iterable<? extends Restaurante> restaurantes) {
-		return super.toCollectionModel(restaurantes).add(algaLinks.linkToRestaurantes("restuarantes"));
+		
+		CollectionModel<RestauranteDTO> restaurantesDto = super.toCollectionModel(restaurantes);
+		
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			restaurantesDto.add(algaLinks.linkToRestaurantes());
+		}
+		
+		return restaurantesDto;
 	}
 
 	public RestauranteDTOInput toRestauranteDTOInput(Restaurante restauranteAtual) {

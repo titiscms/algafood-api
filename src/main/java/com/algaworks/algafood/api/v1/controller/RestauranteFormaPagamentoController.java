@@ -17,6 +17,7 @@ import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.FormaPagamentoDTOAssembler;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -36,22 +37,30 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	@Autowired
 	private AlgaLinks algaLinks;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.findOrFail(restauranteId);
 		
-		CollectionModel<FormaPagamentoDTO> formasPagamentoDTO 
-			= formaPagamentoDTOAssembler.toCollectionModel(restaurante.getFormasPagamento())
-				.removeLinks()
-				.add(algaLinks.linkToRestauranteFormasPagamento(restauranteId))
-				.add(algaLinks.linkToRestauranteAssociacao(restauranteId, "associar"));
+		CollectionModel<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoDTOAssembler
+				.toCollectionModel(restaurante.getFormasPagamento()).removeLinks();
 		
-		formasPagamentoDTO.getContent().forEach(formaPagamentoDTO -> {
-			formaPagamentoDTO.add(algaLinks
-					.linkToRestauranteDesassociacao(restauranteId, formaPagamentoDTO.getId(), "desassociar"));
-		});
+		formasPagamentoDTO.add(algaLinks.linkToRestauranteFormasPagamento(restauranteId));
+		
+		if (algaSecurity.podeGerenciarFuncionamentoRestaurantes(restauranteId)) {
+			
+			formasPagamentoDTO.add(algaLinks.linkToRestauranteAssociacao(restauranteId, "associar"));
+			
+			formasPagamentoDTO.getContent().forEach(formaPagamentoDTO -> {
+				formaPagamentoDTO.add(algaLinks.linkToRestauranteDesassociacao(
+						restauranteId, formaPagamentoDTO.getId(), "desassociar"));
+			});
+			
+		}
 		
 		return formasPagamentoDTO;
 	}

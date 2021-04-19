@@ -17,6 +17,7 @@ import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.UsuarioDTOAssembler;
 import com.algaworks.algafood.api.v1.model.UsuarioDTO;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteUsuarioControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -36,22 +37,30 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 	@Autowired
 	private AlgaLinks algaLinks;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.findOrFail(restauranteId);
 		
-		CollectionModel<UsuarioDTO> responsaveisRestauranteDTO 
-			= usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis())
-				.removeLinks()
-				.add(algaLinks.linkToRestauranteResponsaveis(restauranteId))
-				.add(algaLinks.linkToRestauranteResponsaveisAssociacao(restauranteId, "associar"));
+		CollectionModel<UsuarioDTO> responsaveisRestauranteDTO = usuarioDTOAssembler
+				.toCollectionModel(restaurante.getResponsaveis()).removeLinks();
 		
-		responsaveisRestauranteDTO.getContent().forEach(responsavelRestauranteDTO -> {
-			responsavelRestauranteDTO.add(algaLinks.
-					linkToRestauranteResponsaveisDesassociacao(restauranteId, responsavelRestauranteDTO.getId(), "desassociar"));
-		});
+		responsaveisRestauranteDTO.add(algaLinks.linkToRestauranteResponsaveis(restauranteId));
+		
+		if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+			
+			responsaveisRestauranteDTO.add(algaLinks.linkToRestauranteResponsaveisAssociacao(restauranteId, "associar"));
+			
+			responsaveisRestauranteDTO.getContent().forEach(responsavelRestauranteDTO -> {
+				responsavelRestauranteDTO.add(algaLinks.linkToRestauranteResponsaveisDesassociacao(
+						restauranteId, responsavelRestauranteDTO.getId(), "desassociar"));
+			});
+
+		}
 		
 		return responsaveisRestauranteDTO;
 	}

@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.api.v1.controller.CidadeController;
 import com.algaworks.algafood.api.v1.controller.CozinhaController;
 import com.algaworks.algafood.api.v1.controller.EstadoController;
-import com.algaworks.algafood.api.v1.controller.EstatisticaController;
+import com.algaworks.algafood.api.v1.controller.EstatisticasController;
+import com.algaworks.algafood.api.v1.controller.FluxoPedidoController;
 import com.algaworks.algafood.api.v1.controller.FormaPagamentoController;
 import com.algaworks.algafood.api.v1.controller.GrupoController;
 import com.algaworks.algafood.api.v1.controller.GrupoPermissaoController;
@@ -51,12 +52,16 @@ public class AlgaLinks {
 		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
 	}
 	
-	public Link linkToPedidosResumo(String rel) {
-		return linkTo(PedidoController.class).withRel(rel);
+	public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
+		return linkTo(methodOn(FluxoPedidoController.class).confirmar(codigoPedido)).withRel(rel);
 	}
 	
-	public Link linkToPedidosResumo() {
-		return linkToPedidosResumo(IanaLinkRelations.SELF.value());
+	public Link linkToEntregaPedido(String codigoPedido, String rel) {
+		return linkTo(methodOn(FluxoPedidoController.class).entregar(codigoPedido)).withRel(rel);
+	}
+	
+	public Link linkToCancelamentoPedido(String codigoPedido, String rel) {
+		return linkTo(methodOn(FluxoPedidoController.class).cancelar(codigoPedido)).withRel(rel);
 	}
 	
 	public Link linkToRestaurantes(String rel) {
@@ -284,14 +289,14 @@ public class AlgaLinks {
 	            new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
 	            new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
 	    
-	    String pedidosUrl = linkTo(methodOn(EstatisticaController.class)
+	    String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
 	    		.consultarVendasDiarias(null, null)).toUri().toString();
 	    
 	    return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
-	}  
+	}
 	
 	public Link linkToEstatisticas(String rel) {
-	    return linkTo(EstatisticaController.class).withRel(rel);
-	}
+		return linkTo(EstatisticasController.class).withRel(rel);
+	}  
 
 }

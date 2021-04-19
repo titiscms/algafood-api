@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
+import org.springframework.http.ResponseEntity;
+
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 
 import io.swagger.annotations.Api;
@@ -16,7 +18,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 204, message = "Pedido confirmado com sucesso"),
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class)
 	})
-	void confirmar(
+	ResponseEntity<Void> confirmar(
 			@ApiParam(value = "Código de um pedido", example = "ad759d44-3af1-4fcc-a022-52bdb374a23c", required = true)
 			String codigoPedido);
 	
@@ -25,7 +27,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 204, message = "Pedido cancelado com sucesso"),
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class)
 	})
-	void cancelar(
+	ResponseEntity<Void> cancelar(
 			@ApiParam(value = "Código de um pedido", example = "ad759d44-3af1-4fcc-a022-52bdb374a23c", required = true)
 			String codigoPedido);
 	
@@ -34,7 +36,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 204, message = "Pedido entregue com sucesso"),
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class)
 	})
-	void entregar(
+	ResponseEntity<Void> entregar(
 			@ApiParam(value = "Código de um pedido", example = "ad759d44-3af1-4fcc-a022-52bdb374a23c", required = true)
 			String codigoPedido);
 }
