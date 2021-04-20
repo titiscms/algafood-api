@@ -51,21 +51,30 @@ import com.algaworks.algafood.api.v2.openapi.model.CidadesDTOOpenApiV2;
 import com.algaworks.algafood.api.v2.openapi.model.CozinhasDTOOpenApiV2;
 import com.fasterxml.classmate.TypeResolver;
 
+import lombok.extern.slf4j.Slf4j;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.GrantType;
+import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
 import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@Slf4j
 @Configuration
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
@@ -77,41 +86,62 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		
 		return new Docket(DocumentationType.SWAGGER_2)
 				.groupName("V1")
+				
 				.select()
 					.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
 					.paths(PathSelectors.ant("/v1/**"))
 					.build()
+					
 				.useDefaultResponseMessages(false)
+				
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
 				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
 				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
+				
 				.additionalModels(typeResolver.resolve(Problem.class))
+				
 				.ignoredParameterTypes(ServletWebRequest.class, File.class, 
 						InputStream.class, Resource.class, URL.class, URI.class, URLStreamHandler.class)
+				
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhasDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class), FormasPagamentoDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoDTOOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosDTOOpenApi.class))
+				
+				.securitySchemes(Arrays.asList(securityScheme()))
+				.securityContexts(Arrays.asList(securityContext()))
+				
 				.apiInfo(apiInfoV1())
+				
 				.tags(tagsV1()[0], tagsV1());
 	}
 	
@@ -121,41 +151,35 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		
 		return new Docket(DocumentationType.SWAGGER_2)
 				.groupName("V2")
+				
 				.select()
 					.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
 					.paths(PathSelectors.ant("/v2/**"))
 					.build()
+					
 				.useDefaultResponseMessages(false)
+				
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
 				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
 				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
+				
 				.additionalModels(typeResolver.resolve(Problem.class))
+				
 				.ignoredParameterTypes(ServletWebRequest.class, File.class, 
 						InputStream.class, Resource.class, URL.class, URI.class, URLStreamHandler.class)
+				
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(PagedModel.class, CozinhaDTOV2.class), CozinhasDTOOpenApiV2.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeDTOV2.class), CidadesDTOOpenApiV2.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class), FormasPagamentoDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoDTOOpenApi.class))
-//				.alternateTypeRules(AlternateTypeRules.newRule(
-//						typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosDTOOpenApi.class))
+				
 				.apiInfo(apiInfoV2())
+				
 				.tags(tagsV2()[0], tagsV2());
 	}
 	
@@ -245,6 +269,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.build();
 	}
 	
+	/*
+	 * Modelo para apresentar na documentação que a api está depreciada
+	 */
 //	private ApiInfo apiInfoV1() {
 //		return new ApiInfoBuilder()
 //				.title("Algafood API (Depreciada)")
@@ -295,16 +322,36 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		return new Tag[] {
 			new Tag("Cidades", "Gerencia as cidades"),
 			new Tag("Cozinhas", "Gerencia as cozinhas"),
-//			new Tag("Grupos", "Gerencia os grupos de usuários"),
-//			new Tag("FormasPagamento", "Gerencia as formas de pagamento"),
-//			new Tag("Pedidos", "Gerencia os pedidos"),
-//			new Tag("Restaurantes", "Gerencia os restaurantes"),
-//			new Tag("Estados", "Gerencia os estados"),
-//			new Tag("Produtos", "Gerencia os produtos de restaurantes"),
-//			new Tag("Usuários", "Gerencia os usuários"),
-//			new Tag("Estatísticas", "Estatísticas da AlgaFood"),
-//			new Tag("Permissões", "Gerencia as permissões")
 		};
+	}
+	
+	private SecurityScheme securityScheme() {
+		return new OAuthBuilder()
+				.name("AlgaFood")
+				.grantTypes(grantTypes())
+				.scopes(scopes())
+				.build();
+	}
+	
+	private List<GrantType> grantTypes() {
+		return Arrays.asList(new ResourceOwnerPasswordCredentialsGrant("/oauth/token"));
+	}
+	
+	private List<AuthorizationScope> scopes() {
+		return Arrays.asList(new AuthorizationScope("READ", "Acesso de leitura"), 
+				new AuthorizationScope("WRITE", "Acesso de edição"));
+	}
+	
+	private SecurityContext securityContext() {
+		SecurityReference securityReference = SecurityReference.builder()
+				.reference("AlgaFood")
+				.scopes(scopes().toArray(new AuthorizationScope[0]))
+				.build();
+		
+		return SecurityContext.builder()
+				.securityReferences(Arrays.asList(securityReference))
+				.forPaths(PathSelectors.any())
+				.build();
 	}
 	
 }
