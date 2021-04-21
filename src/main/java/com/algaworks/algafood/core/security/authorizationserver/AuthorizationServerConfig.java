@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.security.authorizationserver;
 
 import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
@@ -23,6 +24,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 
 @Configuration
 @EnableAuthorizationServer
@@ -212,25 +218,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-		/*
-		 * configuração para trabalhar com chave simétrica
-		 */
-//		jwtAccessTokenConverter.setSigningKey("oaiheknadcliaecadkcfkvnefoidfhdbs98euonwdnvlksjoi3");
-		
-		/*
-		 * configuração para trabalhar com chave assimétrica
-		 */
-		String keyStorePass = jwtKeyStoreProperties.getPassword();
-		String keyPairAlias = jwtKeyStoreProperties.getAlias();
-		
-		KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), 
-				keyStorePass.toCharArray());
-		
-		KeyPair keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
-		
-		jwtAccessTokenConverter.setKeyPair(keyPair);
+		jwtAccessTokenConverter.setKeyPair(keyPair());
 		
 		return jwtAccessTokenConverter;
+	}
+	
+	@Bean
+	public JWKSet jwkSet() {
+		RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+				.keyUse(KeyUse.SIGNATURE)
+				.algorithm(JWSAlgorithm.RS256)
+				.keyID("algafood-key-id");
+		
+		return new JWKSet(builder.build());
 	}
 	
 	/*
@@ -248,11 +248,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	}
 
 	/*
-	 * Desabilitado temporariamente
-	 * configuração para usar o redis para armazenar os tokens
+	 * Método para retornar um KeyPair (par de chaves)
+	 * Configuração chave assimétrica
 	 */
-//	private TokenStore redisTokenStore() {
-//		return new RedisTokenStore(redisConnectionFactory);
-//	}
+	private KeyPair keyPair() {
+		String keyStorePass = jwtKeyStoreProperties.getPassword();
+		String keyPairAlias = jwtKeyStoreProperties.getAlias();
+		
+		KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), 
+				keyStorePass.toCharArray());
+		
+		KeyPair keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
+		
+		return keyPair;
+	}
 		
 }
