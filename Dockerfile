@@ -11,6 +11,10 @@ ARG JAR_FILE
 # The first value is the source of the application's jar file. 
 # The second value is the destination for the application copy.
 COPY target/${JAR_FILE} /app/api.jar
+COPY wait-for-it.sh /wait-for-it.sh
+
+# Command to make a file executable.
+RUN chmod +x /wait-for-it.sh
 
 # Information on which port the container will listen to.
 # This parameter does not publish the port.
