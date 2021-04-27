@@ -1,5 +1,23 @@
 SET foreign_key_checks = 0;
 
+LOCK TABLES 
+	cidade WRITE,
+	cozinha WRITE,
+	estado WRITE,
+	forma_pagamento WRITE,
+	grupo WRITE,
+	grupo_permissao WRITE,
+	permissao WRITE,
+	produto WRITE,
+	restaurante WRITE,
+	restaurante_forma_pagamento WRITE,
+	usuario WRITE,
+	usuario_grupo WRITE,
+	restaurante_usuario_responsavel WRITE,
+	pedido WRITE,
+	item_pedido WRITE,
+	oauth_client_details WRITE;
+
 DELETE FROM cidade;
 DELETE FROM cozinha;
 DELETE FROM estado;
@@ -135,4 +153,4 @@ INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope,
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('logistica', NULL, NULL, 'READ,WRITE', 'implicit', 'http://www.foodlogistics.local:8082', NULL, NULL, NULL, NULL, NULL );
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('algafood-mobile', NULL, '$2y$12$hrQ9HLh0NX.7DaGyHgW4jesjGdSKGTmpV9SeTwCm3.UxpqUi3kWTi', 'READ,WRITE', 'password', NULL, NULL, 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
 
-
+UNLOCK TABLES;
