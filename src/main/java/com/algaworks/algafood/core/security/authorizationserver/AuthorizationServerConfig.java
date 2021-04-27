@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -166,6 +167,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints
 			.authenticationManager(authenticationManager)
 			.userDetailsService(userDetailsService)
+			/*
+			 * alterando o comportamento padrão para buscar o authorization code no banco de dados
+			 */
+			.authorizationCodeServices(new JdbcAuthorizationCodeServices(this.dataSource))
 			/*
 			 * configuração para inutilizar o reuso do refresh token.
 			 */

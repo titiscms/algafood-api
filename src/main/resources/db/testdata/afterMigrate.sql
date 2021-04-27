@@ -34,6 +34,7 @@ DELETE FROM restaurante_usuario_responsavel;
 DELETE FROM pedido;
 DELETE FROM item_pedido;
 DELETE FROM oauth_client_details;
+DELETE FROM oauth_code;
 
 SET foreign_key_checks = 1;
 
@@ -149,7 +150,7 @@ INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, 
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('algafood-web', NULL, '$2y$12$yT76bKkcMaL0Ib4XX/1V1OReOcpoywmhdh.ezVFIfyEecyd7j5ec2', 'READ,WRITE', 'password,refresh_token', NULL, NULL, 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('faturamento', NULL, '$2y$12$wlTJcy2sowIEirrGPteuI.JXTI7d6HK9UIggTwh7eGQFXJZ0RYRIO', 'READ,WRITE', 'client_credentials', NULL, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS', 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('foodanalyticssimple', NULL, '$2y$12$l6otrAwxmmilWjt6w.TfZecEGYYeFRNXsQoIILzAkZISBB40OSDJK', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', NULL, NULL, NULL, NULL, NULL );
-INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('foodanalytics', NULL, '', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', NULL, NULL, NULL, NULL, NULL );
+INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('foodanalytics', NULL, '$2y$12$l6otrAwxmmilWjt6w.TfZecEGYYeFRNXsQoIILzAkZISBB40OSDJK', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', NULL, NULL, NULL, NULL, NULL );
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('logistica', NULL, NULL, 'READ,WRITE', 'implicit', 'http://www.foodlogistics.local:8082', NULL, NULL, NULL, NULL, NULL );
 INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('algafood-mobile', NULL, '$2y$12$hrQ9HLh0NX.7DaGyHgW4jesjGdSKGTmpV9SeTwCm3.UxpqUi3kWTi', 'READ,WRITE', 'password', NULL, NULL, 60 * 60 * 6, 60 * 24 * 60 * 60, NULL, NULL );
 
