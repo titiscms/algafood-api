@@ -16,7 +16,8 @@ LOCK TABLES
 	restaurante_usuario_responsavel WRITE,
 	pedido WRITE,
 	item_pedido WRITE,
-	oauth_client_details WRITE;
+	oauth_client_details WRITE,
+	oauth_code WRITE;
 
 DELETE FROM cidade;
 DELETE FROM cozinha;
